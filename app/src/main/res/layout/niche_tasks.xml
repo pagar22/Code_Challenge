@@ -8,7 +8,8 @@
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
         android:padding="10dp"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="30dp"
@@ -19,7 +20,6 @@
 
     <Button
         android:id="@+id/task1"
-        android:text="HELLO"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_margin="20dp"

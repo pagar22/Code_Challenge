@@ -19,6 +19,8 @@
 
         <activity android:name=".NicheTasks"/>
         <activity android:name=".Reminders"/>
+        <activity android:name=".NicheTasksList"/>
+        <activity android:name=".NicheTasksAdd"/>
 
     </application>
 

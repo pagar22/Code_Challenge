@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <EditText
+        android:id="@+id/taskDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:hint="Describe the task..."/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/colorPrimary"
+        android:layout_margin="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:text="Task Deadline..."
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/timePickText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/background_color"
+        android:text="CHOOSE TIME"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:padding="15dp"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        />
+
+    <TextView
+        android:id="@+id/datePickText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/background_color"
+        android:text="CHOOSE DATE"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:padding="15dp"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/colorPrimary"
+        android:layout_margin="5dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:text="Assigned to..."
+        android:textSize="18dp"/>
+    <LinearLayout
+        android:id="@+id/checkboxView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:orientation="vertical"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/colorPrimary"
+        android:layout_margin="5dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center">
+        <Button
+            android:id="@+id/taskCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp"
+            android:text="Cancel"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:background="@drawable/background_color"/>
+        <Button
+            android:id="@+id/taskSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/taskCancel"
+            android:layout_marginLeft="30dp"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp"
+            android:text="Save &amp; Share"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:background="@drawable/background_color" />
+    </RelativeLayout>
+</LinearLayout>
+</ScrollView>
