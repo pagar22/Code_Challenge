@@ -6,9 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -35,31 +36,11 @@ public class NicheTasks extends AppCompatActivity {
         setButtonText(three, "three");
         setButtonText(four, "four");
 
-        one.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(one.getText().equals("ADD A NICHE NOW!"))
-                    addNewTask(one, "one");
-                else{
-                    Intent intent = new Intent(getApplicationContext(), NicheTasksList.class);
-                    intent.putExtra("TaskName", one.getText().toString());
-                    startActivity(intent);
-                }
-            }
-        });
 
-        two.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(two.getText().equals("ADD A NICHE NOW!"))
-                    addNewTask(two, "two");
-                else{
-                    Intent intent = new Intent(getApplicationContext(), NicheTasksList.class);
-                    intent.putExtra("TaskName", two.getText().toString());
-                    startActivity(intent);
-                }
-            }
-        });
+        runButton(one, "one");
+        runButton(two, "two");
+        runButton(three, "three");
+        runButton(four, "four");
 
     }
 
@@ -72,7 +53,22 @@ public class NicheTasks extends AppCompatActivity {
             button.setText(string);
     }
 
-    private void addNewTask(final Button button, final String key){
+    private void runButton(final Button button, final String key){
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(button.getText().equals("ADD A NICHE NOW!"))
+                    saveNewButton(button, key);
+                else{
+                    Intent intent = new Intent(getApplicationContext(), NicheTasksList.class);
+                    intent.putExtra("TaskName", button.getText().toString());
+                    startActivity(intent);
+                }
+            }
+        });
+    }
+
+    private void saveNewButton(final Button button, final String key){
         final EditText editText = new EditText(this);
         editText.setInputType(InputType.TYPE_CLASS_TEXT);
         new AlertDialog.Builder(this)
@@ -82,9 +78,19 @@ public class NicheTasks extends AppCompatActivity {
                 .setPositiveButton("ADD!", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if (editText.getText().toString().equals(""))
+                                String buttonOne = one.getText().toString();
+                                String buttonTwo = two.getText().toString();
+                                String buttonThree = three.getText().toString();
+                                String buttonFour = four.getText().toString();
+
+                                String input = editText.getText().toString();
+                                if (input.equals("")
+                                        || input.equals(buttonOne)
+                                        || input.equals(buttonTwo)
+                                        || input.equals(buttonThree)
+                                        || input.equals(buttonFour))
                                     Toast.makeText(getApplicationContext(),
-                                            "Please enter a valid name", Toast.LENGTH_LONG).show();
+                                            "Please enter a valid name (no blanks, no repeats)", Toast.LENGTH_LONG).show();
                                 else {
                                     SharedPreferences sharedPreferences =
                                             getSharedPreferences("Code_Challenge", MODE_PRIVATE);

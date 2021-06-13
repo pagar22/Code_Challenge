@@ -30,11 +30,11 @@ public class NicheTasksAdd extends AppCompatActivity {
 
     TextView datePickText;
     DatePickerDialog datePicker;
-    String date;
+    String date = "";
 
     TextView timePickText;
     TimePickerDialog timePicker;
-    String time;
+    String time = "";
 
 
     @Override
@@ -57,7 +57,7 @@ public class NicheTasksAdd extends AppCompatActivity {
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(checkBox.isChecked())
+                    if(isChecked)
                         assignedTo.add(checkBox.getText().toString());
                     else
                         assignedTo.remove(checkBox.getText().toString());
@@ -67,13 +67,13 @@ public class NicheTasksAdd extends AppCompatActivity {
         final Calendar calendar = Calendar.getInstance();
 
         datePickText = findViewById(R.id.datePickText);
-        final int day = calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
         final int month = calendar.get(Calendar.MONTH);
         final int year = calendar.get(Calendar.YEAR);
 
         timePickText = findViewById(R.id.timePickText);
         final int min = calendar.get(Calendar.MINUTE);
-        final int hour = calendar.get(Calendar.HOUR);
+        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
         timePickText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +85,7 @@ public class NicheTasksAdd extends AppCompatActivity {
                                 time = hourOfDay + " : " + minute;
                                 timePickText.setText(time);
                             }
-                        }, hour, min, false);
+                        }, hour, min, true);
                 timePicker.show();
             }
         });
@@ -109,33 +109,48 @@ public class NicheTasksAdd extends AppCompatActivity {
             }
         });
 
-        save = findViewById(R.id.taskSave);
         description = findViewById(R.id.taskDescription);
+        save = findViewById(R.id.taskSave);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(description.equals("") || assignedTo.isEmpty())
+                if(description.equals("") || assignedTo.isEmpty()
+                        || time.equals("") || date.equals(""))
                     Toast.makeText(getApplicationContext(), "Invalid input, please fill all fields",
                             Toast.LENGTH_LONG).show();
                 else {
-                    NicheTasksObject taskObject = new NicheTasksObject(getIntent.getStringExtra("TaskName"),
-                            description.getText().toString(), assignedTo, time + " ~" + date);
+                    String title = getIntent.getStringExtra("TaskName");
+                    NicheTasksObject taskObject = new NicheTasksObject(title, description.getText().toString(),
+                            assignedTo, time + " | " + date);
                     NicheTasksList.noItemText.setText("");
-                    NicheTasksList.nicheTasks.add(null);
-                    int pos = NicheTasksList.nicheTasks.size()-1;
-                    NicheTasksList.nicheTasks.set(pos, taskObject);
+                    NicheTasksList.nicheTasks.add(taskObject);
                     NicheTasksList.arrayAdapter.notifyDataSetChanged();
-                    taskObject.save(getApplicationContext(), pos);
+                    NicheTasksObject.save(getApplicationContext(), title);
 
-                    //share on WhatsApp
+                    //share on WhatsApp, Email, etc.
                     Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TITLE, "You've been assigned with a "+title+" title!");
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, taskObject.toString());
+                    sendIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+                    sendIntent.setType("text/plain");
+                    Intent shareIntent = Intent.createChooser(sendIntent, title);
+                    //shareIntent.putExtra(Intent.EXTRA_CHOOSER_TARGETS, )
+                    startActivity(shareIntent);
+                    finish();
 
                 }
-
             }
         });
 
         cancel = findViewById(R.id.taskCancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Cancelled!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
 
 
 

@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -30,18 +32,23 @@ public class NicheTasksObject {
     public String toString(){
         return "Department: " + title + '\n'
                 + "Task: " + description + '\n'
-                + "Assigned To: " + assignedTo.toString() + '\n'
+                + "Assigned To: " + assignedTo.toString()
+                .replace("[", "").replace("]","") + '\n'
                 + "Deadline: " + date;
     }
 
-    public void save(Context context, int key){
+    public static void save(Context context, String title){
+        Set<String> resultSet = new HashSet<>();
+        for(NicheTasksObject object : NicheTasksList.nicheTasks)
+            resultSet.add(object.toString());
+
         SharedPreferences sharedPreferences =
                 context.getSharedPreferences("Code_Challenge", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("Task"+key, this.toString());
-        editor.putInt("TaskListSize", key);
+        editor.putStringSet("TaskList"+title, resultSet);
         editor.commit();
     }
+
 
     public static NicheTasksObject parser(String string) throws NullPointerException{
         if(!string.equals("")) {
@@ -53,7 +60,7 @@ public class NicheTasksObject {
                     String x = list1[i].split(":")[1].substring(1);
                     assignedTo = Arrays.asList(x.split(","));
                 } else
-                    requiredResult[i] = list1[i].split(":")[1].substring(1);
+                    requiredResult[i] = list1[i].split(":", 2)[1].substring(1);
             }
             return new NicheTasksObject(requiredResult[0], requiredResult[1], assignedTo, requiredResult[3]);
         }
