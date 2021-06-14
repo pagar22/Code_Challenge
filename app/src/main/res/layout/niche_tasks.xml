@@ -1,68 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="NICHE TASKS"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"/>
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:padding="10dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="30dp"
-        android:text="NICHE TASKS"
-        android:textSize="60sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary"/>
+        <Button
+            android:id="@+id/task1"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_margin="20dp"
+            android:elevation="50dp"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_below="@id/text"
+            android:background="@drawable/background_color_opp" />
 
-    <Button
-        android:id="@+id/task1"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_margin="20dp"
-        android:elevation="50dp"
-        android:textColor="#ffffff"
-        android:textSize="20dp"
-        android:layout_below="@id/text"
-        android:background="@drawable/background_color_opp" />
+        <Button
+            android:id="@+id/task2"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_margin="20dp"
+            android:elevation="50dp"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_below="@+id/text"
+            android:layout_toRightOf="@+id/task1"
+            android:background="@drawable/background_color" />
 
-    <Button
-        android:id="@+id/task2"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_margin="20dp"
-        android:elevation="50dp"
-        android:textColor="#ffffff"
-        android:textSize="20dp"
-        android:layout_below="@+id/text"
-        android:layout_toRightOf="@+id/task1"
-        android:background="@drawable/background_color" />
+        <Button
+            android:id="@+id/task3"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_margin="20dp"
+            android:elevation="50dp"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_below="@+id/task1"
+            android:background="@drawable/background_color_opp" />
 
-    <Button
-        android:id="@+id/task3"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_margin="20dp"
-        android:elevation="50dp"
-        android:textColor="#ffffff"
-        android:textSize="20dp"
-        android:layout_below="@+id/task1"
-        android:background="@drawable/background_color_opp" />
+        <Button
+            android:id="@+id/task4"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_margin="20dp"
+            android:elevation="50dp"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_below="@+id/task2"
+            android:layout_toRightOf="@+id/task3"
+            android:background="@drawable/background_color" />
 
-    <Button
-        android:id="@+id/task4"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_margin="20dp"
-        android:elevation="50dp"
-        android:textColor="#ffffff"
-        android:textSize="20dp"
-        android:layout_below="@+id/task2"
-        android:layout_toRightOf="@+id/task3"
-        android:background="@drawable/background_color" />
-    
+        <Button
+            android:id="@+id/pointsTally"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:layout_below="@+id/task4"
+            android:text="POINTS TALLY!"
+            android:textSize="25sp"
+            android:textColor="#090808"
+            android:background="@drawable/background_color"
+            android:backgroundTint="#F7C47E"
+            android:elevation="20dp"/>
 
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

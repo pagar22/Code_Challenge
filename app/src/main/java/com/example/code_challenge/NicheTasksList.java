@@ -131,13 +131,11 @@ public class NicheTasksList extends AppCompatActivity {
     //flag = true for add, flag = false for subtract
     private void pointsController(NicheTasksObject tasksObject, boolean flag, int points){
         for(String s : tasksObject.assignedTo){
+            //update points for each member in assignedTo list
             String key = s+"Points";
             SharedPreferences sharedPrefAppend = getSharedPreferences("Code_Challenge", MODE_APPEND);
             int currentPoints = sharedPrefAppend.getInt(key, 0);
-            if(flag)
-                currentPoints += points;
-            else
-                currentPoints -= points;
+            currentPoints = (flag)? +points : -points;
             SharedPreferences sharedPrefEdit = getSharedPreferences("Code_Challenge", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefEdit.edit();
             editor.putInt(key, currentPoints);

@@ -6,10 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -21,6 +19,7 @@ public class NicheTasks extends AppCompatActivity {
     Button two;
     Button three;
     Button four;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -42,6 +41,19 @@ public class NicheTasks extends AppCompatActivity {
         runButton(three, "three");
         runButton(four, "four");
 
+        runButtonLongClick(one, "one");
+        runButtonLongClick(two, "two");
+        runButtonLongClick(three, "three");
+        runButtonLongClick(four, "four");
+
+        Button pointsTally = findViewById(R.id.pointsTally);
+        pointsTally.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PointsTally.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setButtonText(Button button, String key){
@@ -57,8 +69,51 @@ public class NicheTasks extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(button.getText().equals("ADD A NICHE NOW!"))
-                    saveNewButton(button, key);
+                //open dialog to set new niche task
+                if(button.getText().equals("ADD A NICHE NOW!")){
+                    final EditText editText = new EditText(getApplicationContext());
+                    editText.setInputType(InputType.TYPE_CLASS_TEXT);
+                    new AlertDialog.Builder(getApplicationContext())
+                            .setTitle("Enter Niche Name")
+                            .setView(editText)
+
+                            .setPositiveButton("ADD!", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String buttonOne = one.getText().toString();
+                                    String buttonTwo = two.getText().toString();
+                                    String buttonThree = three.getText().toString();
+                                    String buttonFour = four.getText().toString();
+
+                                    String input = editText.getText().toString();
+                                    if (input.equals("")
+                                            || input.trim().equalsIgnoreCase(buttonOne)
+                                            || input.trim().equalsIgnoreCase(buttonTwo)
+                                            || input.trim().equalsIgnoreCase(buttonThree)
+                                            || input.trim().equalsIgnoreCase(buttonFour))
+                                        Toast.makeText(getApplicationContext(),
+                                                "Please enter a valid name (no blanks, no repeats)", Toast.LENGTH_LONG).show();
+                                    else {
+                                        SharedPreferences sharedPreferences =
+                                                getSharedPreferences("Code_Challenge", MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString(key, editText.getText().toString());
+                                        editor.commit();
+                                        button.setText(editText.getText().toString());
+                                    }
+                                }
+                            })
+                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(getApplicationContext(),
+                                            "Cancelled", Toast.LENGTH_SHORT).show();
+                                    dialog.cancel();
+                                }
+                            })
+                            .show();
+                }
+                //else open existing task activity
                 else{
                     Intent intent = new Intent(getApplicationContext(), NicheTasksList.class);
                     intent.putExtra("TaskName", button.getText().toString());
@@ -68,47 +123,77 @@ public class NicheTasks extends AppCompatActivity {
         });
     }
 
-    private void saveNewButton(final Button button, final String key){
-        final EditText editText = new EditText(this);
-        editText.setInputType(InputType.TYPE_CLASS_TEXT);
-        new AlertDialog.Builder(this)
-                .setTitle("Enter Niche Name")
-                .setView(editText)
+    private void runButtonLongClick(final Button button, final String key){
+        button.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(button.getText().equals("ADD A NICHE NOW!"))
+                    Toast.makeText(getApplicationContext(), "Please set the niche first", Toast.LENGTH_LONG).show();
+                //open dialog to delete/edit existing niche
+                else{
+                    final String existingName = button.getText().toString();
+                    final EditText editText = new EditText(getApplicationContext());
+                    editText.setInputType(InputType.TYPE_CLASS_TEXT);
+                    editText.setText(existingName);
+                    new AlertDialog.Builder(getApplicationContext())
+                            .setTitle("Niche Settings")
+                            .setView(editText)
 
-                .setPositiveButton("ADD!", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String buttonOne = one.getText().toString();
-                                String buttonTwo = two.getText().toString();
-                                String buttonThree = three.getText().toString();
-                                String buttonFour = four.getText().toString();
+                            .setPositiveButton("RENAME", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String buttonOne = one.getText().toString();
+                                    String buttonTwo = two.getText().toString();
+                                    String buttonThree = three.getText().toString();
+                                    String buttonFour = four.getText().toString();
 
-                                String input = editText.getText().toString();
-                                if (input.equals("")
-                                        || input.equals(buttonOne)
-                                        || input.equals(buttonTwo)
-                                        || input.equals(buttonThree)
-                                        || input.equals(buttonFour))
-                                    Toast.makeText(getApplicationContext(),
-                                            "Please enter a valid name (no blanks, no repeats)", Toast.LENGTH_LONG).show();
-                                else {
-                                    SharedPreferences sharedPreferences =
-                                            getSharedPreferences("Code_Challenge", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putString(key, editText.getText().toString());
-                                    editor.commit();
-                                    button.setText(editText.getText().toString());
+                                    String input = editText.getText().toString();
+                                    if (input.equals("")
+                                            || input.trim().equalsIgnoreCase(buttonOne)
+                                            || input.trim().equalsIgnoreCase(buttonTwo)
+                                            || input.trim().equalsIgnoreCase(buttonThree)
+                                            || input.trim().equalsIgnoreCase(buttonFour))
+                                        Toast.makeText(getApplicationContext(),
+                                                "Please enter a valid new name (no blanks, no repeats)", Toast.LENGTH_LONG).show();
+                                    else if(input.trim().equalsIgnoreCase(existingName))
+                                        Toast.makeText(getApplicationContext(),
+                                                "No changes found!", Toast.LENGTH_SHORT).show();
+                                    else {
+                                        //will overwrite existing name since key is same
+                                        SharedPreferences sharedPreferences =
+                                                getSharedPreferences("Code_Challenge", MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString(key, editText.getText().toString());
+                                        editor.commit();
+                                        button.setText(editText.getText().toString());
+                                    }
                                 }
-                            }
-                        })
-                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(),
-                                        "Cancelled", Toast.LENGTH_SHORT).show();
-                                dialog.cancel();
-                            }
-                        })
-                .show();
+                            })
+                            .setNeutralButton("DELETE", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.remove("TaskList"+button.getText().toString());
+                                    editor.commit();
+
+                                    Toast.makeText(getApplicationContext(),
+                                            "Deleted "+button.getText().toString()+" Niche", Toast.LENGTH_SHORT).show();
+                                    button.setText("ADD A NICHE NOW!");
+                                }
+                            })
+                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(getApplicationContext(),
+                                            "Cancelled", Toast.LENGTH_SHORT).show();
+                                    dialog.cancel();
+                                }
+                            })
+                            .show();
+                }
+                return true;
+            }
+        });
     }
 }

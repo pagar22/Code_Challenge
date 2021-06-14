@@ -11,7 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:hint="Describe the task..."/>
+        android:hint="Describe the task..."
+        android:inputType="textCapSentences"
+        android:imeOptions="actionDone"/>
 
     <View
         android:layout_width="match_parent"
