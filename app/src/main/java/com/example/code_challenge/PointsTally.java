@@ -1,21 +1,20 @@
 package com.example.code_challenge;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PointsTally extends AppCompatActivity {
 
@@ -26,41 +25,122 @@ public class PointsTally extends AppCompatActivity {
         setContentView(R.layout.points_tally);
 
         SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_APPEND);
-        int members = sharedPreferences.getInt("members", 3);
+        final int members = sharedPreferences.getInt("members", 3);
 
         //linear layout for all columns
         linearLayout = findViewById(R.id.pointsTallyView);
-        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        buttonParams.setMargins(100,100,100,50);
 
+        int counter = 5; //relativ view ID for pointsButton, since i can't exceed 4, counter = 5
         for(int i=1; i<=members; i++){
             //relative layout for each row
             RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-            );
-            layoutParams.setMargins(100,100,100,50);
-            layoutParams.addRule(RelativeLayout.RIGHT_OF, i);
 
             //name button
+            RelativeLayout.LayoutParams nameParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            nameParams.setMargins(100,50,100,50);
+            nameParams.addRule(RelativeLayout.ABOVE, R.id.pointsTallyButtonView); //does not work because of linear layout constraints
             Button nameButton = new Button(getApplicationContext());
             nameButton.setId(i);
             String memberName = sharedPreferences.getString("member"+i+"Name", "Aaryan");
             setButton(nameButton, memberName);
-            nameButton.setLayoutParams(buttonParams);
+            nameButton.setLayoutParams(nameParams);
             relativeLayout.addView(nameButton);
 
             //points button
+            RelativeLayout.LayoutParams pointParams = new RelativeLayout.LayoutParams(
+                    300, ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            pointParams.setMargins(100,50,100,50);
+            pointParams.addRule(RelativeLayout.RIGHT_OF, i);
             Button pointsButton = new Button(getApplicationContext());
-            int memberPoints = sharedPreferences.getInt(memberName+"Points", 0);
+            pointsButton.setId(counter); //increment counter value for next iteration
+            int memberPoints = sharedPreferences.getInt(memberName+"Points", 2);
             setButton(pointsButton, Integer.toString(memberPoints));
-            pointsButton.setLayoutParams(layoutParams);
+            pointsButton.setLayoutParams(pointParams);
             relativeLayout.addView(pointsButton);
 
+            //star images
+            RelativeLayout.LayoutParams starParams = new RelativeLayout.LayoutParams(500, 150);
+            starParams.setMargins(50,50,100,50);
+            starParams.addRule(RelativeLayout.RIGHT_OF, counter);
+            ImageView stars = new ImageView(getApplicationContext());
+            String quality = "";
+
+            if (memberPoints < 0 || memberPoints <= 20) {
+                stars.setImageResource(R.drawable.one_star);
+                quality = "One Star :( You need to put more effort";
+            }
+            else if(memberPoints>20 && memberPoints<=40) {
+                stars.setImageResource(R.drawable.two_star);
+                quality = "Two Stars :( You're getting there";
+            }
+            else if(memberPoints>40 && memberPoints<=60) {
+                stars.setImageResource(R.drawable.three_star);
+                quality = "Three Stars :| Your contributions are valuable!";
+            }
+            else if(memberPoints>60 && memberPoints<=80) {
+                stars.setImageResource(R.drawable.four_star);
+                quality = "Four Stars :) You're a key family member!";
+            }
+            else if(memberPoints>80) {
+                stars.setImageResource(R.drawable.five_star);
+                quality = "Five Stars :) YOU RUN THE HOUSE!";
+            }
+
+            final String finalQuality = quality;
+            stars.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), finalQuality, Toast.LENGTH_LONG).show();
+                }
+            });
+            stars.setLayoutParams(starParams);
+            relativeLayout.addView(stars);
+
             linearLayout.addView(relativeLayout);
+            counter++;
         }
+
+        Button reset = findViewById(R.id.pointsTallyReset);
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(PointsTally.this)
+                        .setTitle("Reset Points Tally")
+                        .setMessage("Are you sure you want to reset all points to zero?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences sharedPrefers = getSharedPreferences("Code_Challenge", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPrefers.edit();
+                                for(int i=1; i<=members; i++){
+                                    String memberName = sharedPrefers.getString("member"+i+"Name", "");
+                                    editor.putInt(memberName+"Points", 0);
+                                }
+                                editor.commit();
+                                Toast.makeText(getApplicationContext(), "All points were reset", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }).show();
+            }
+        });
+
+        Button home = findViewById(R.id.pointsTallyHome);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -68,7 +148,7 @@ public class PointsTally extends AppCompatActivity {
         button.setText(name);
         button.setTextColor(Color.WHITE);
         button.setPadding(20,20,20,20);
-        button.setBackground(getDrawable(R.drawable.background_color));
+        button.setBackground(getDrawable(R.drawable.theme_button));
         button.setClickable(false);
     }
 }

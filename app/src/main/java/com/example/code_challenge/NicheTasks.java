@@ -13,6 +13,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class NicheTasks extends AppCompatActivity {
 
     Button one;
@@ -73,7 +76,7 @@ public class NicheTasks extends AppCompatActivity {
                 if(button.getText().equals("ADD A NICHE NOW!")){
                     final EditText editText = new EditText(getApplicationContext());
                     editText.setInputType(InputType.TYPE_CLASS_TEXT);
-                    new AlertDialog.Builder(getApplicationContext())
+                    new AlertDialog.Builder(NicheTasks.this)
                             .setTitle("Enter Niche Name")
                             .setView(editText)
 
@@ -135,7 +138,7 @@ public class NicheTasks extends AppCompatActivity {
                     final EditText editText = new EditText(getApplicationContext());
                     editText.setInputType(InputType.TYPE_CLASS_TEXT);
                     editText.setText(existingName);
-                    new AlertDialog.Builder(getApplicationContext())
+                    new AlertDialog.Builder(NicheTasks.this)
                             .setTitle("Niche Settings")
                             .setView(editText)
 
@@ -148,24 +151,28 @@ public class NicheTasks extends AppCompatActivity {
                                     String buttonFour = four.getText().toString();
 
                                     String input = editText.getText().toString();
-                                    if (input.equals("")
+                                    if(input.trim().equalsIgnoreCase(existingName))
+                                        Toast.makeText(getApplicationContext(),
+                                                "No changes found!", Toast.LENGTH_SHORT).show();
+                                    else if (input.equals("")
                                             || input.trim().equalsIgnoreCase(buttonOne)
                                             || input.trim().equalsIgnoreCase(buttonTwo)
                                             || input.trim().equalsIgnoreCase(buttonThree)
                                             || input.trim().equalsIgnoreCase(buttonFour))
                                         Toast.makeText(getApplicationContext(),
                                                 "Please enter a valid new name (no blanks, no repeats)", Toast.LENGTH_LONG).show();
-                                    else if(input.trim().equalsIgnoreCase(existingName))
-                                        Toast.makeText(getApplicationContext(),
-                                                "No changes found!", Toast.LENGTH_SHORT).show();
                                     else {
+                                        String newName = editText.getText().toString();
                                         //will overwrite existing name since key is same
-                                        SharedPreferences sharedPreferences =
+                                        SharedPreferences sharedPreferencesEdit =
                                                 getSharedPreferences("Code_Challenge", MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        SharedPreferences.Editor editor = sharedPreferencesEdit.edit();
+
+                                        NicheTasksObject.save(getApplicationContext(), newName);
+
                                         editor.putString(key, editText.getText().toString());
                                         editor.commit();
-                                        button.setText(editText.getText().toString());
+                                        button.setText(newName);
                                     }
                                 }
                             })
@@ -174,6 +181,7 @@ public class NicheTasks extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.remove(key);
                                     editor.remove("TaskList"+button.getText().toString());
                                     editor.commit();
 

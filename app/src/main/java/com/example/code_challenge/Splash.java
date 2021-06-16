@@ -22,8 +22,9 @@ public class Splash extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_APPEND);
                 boolean isRegistered = sharedPreferences.getBoolean("isRegistered", false);
                 //if registered, goto Main else goto registration page
-                Intent splashIntent = (isRegistered)? new Intent(getApplicationContext(), MainActivity.class)
-                        : new Intent(getApplicationContext(), Registration.class);
+                Intent splashIntent = //(isRegistered)?
+                        new Intent(getApplicationContext(), MainActivity.class);
+                        //: new Intent(getApplicationContext(), Registration.class);
                 startActivity(splashIntent);
                 finish();
             }
