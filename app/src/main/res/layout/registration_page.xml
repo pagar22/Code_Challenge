@@ -1,6 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/registrationView"
+        android:gravity="center_horizontal">
 
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/registrationViewLL"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register for MyMommy!"
+            android:textSize="30sp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:layout_marginTop="35dp"/>
+
+        <EditText
+            android:id="@+id/registrationFamilyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textColor= "@color/colorAccent"
+            android:hint="Enter your family name..."
+            android:imeOptions="actionDone"
+            android:padding="15dp"
+            android:layout_margin="20dp"/>
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Choose the number of people in your family"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"/>
+        <Spinner
+            android:id="@+id/registrationSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="10dp"/>
+            <TextView
+            android:id="@+id/registrationFamilyNamePrompt"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Enter nicknames for all members (Get creative!)"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:visibility="invisible"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:layout_below="@+id/registrationViewLL">
+            <Button
+                android:id="@+id/registrationCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:padding="10dp"
+                android:text="Cancel"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:background="@drawable/danger_button"/>
+            <Button
+                android:id="@+id/registrationSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/registrationCancel"
+                android:layout_marginLeft="30dp"
+                android:layout_marginBottom="10dp"
+                android:padding="10dp"
+                android:text="REGISTER!"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:background="@drawable/theme_button" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

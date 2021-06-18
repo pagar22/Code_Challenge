@@ -2,4 +2,11 @@
     <string name="app_name">Code_Challenge</string>
     <string name="no_item_text">"It's pretty lonely in here :("</string>
 
+    <string-array name="family_members">
+        <item>--</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 </resources>

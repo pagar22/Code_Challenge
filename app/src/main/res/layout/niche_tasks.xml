@@ -16,7 +16,6 @@
             android:layout_marginBottom="10dp"
             android:text="NICHE TASKS"
             android:textSize="50sp"
-            android:textStyle="bold"
             android:textColor="@color/colorPrimary"/>
 
         <Button
@@ -73,9 +72,8 @@
             android:layout_below="@+id/task4"
             android:text="POINTS TALLY!"
             android:textSize="25sp"
-            android:textColor="#090808"
-            android:background="@drawable/theme_button"
-            android:backgroundTint="#F7C47E"
+            android:textColor="#ffffff"
+            android:background="@drawable/secondary_button"
             android:elevation="20dp"/>
 
     </RelativeLayout>

@@ -135,7 +135,10 @@ public class NicheTasksList extends AppCompatActivity {
             String key = s+"Points";
             SharedPreferences sharedPrefAppend = getSharedPreferences("Code_Challenge", MODE_APPEND);
             int currentPoints = sharedPrefAppend.getInt(key, 0);
-            currentPoints = (flag)? +points : -points;
+            if(flag)
+                currentPoints += points;
+            else
+                currentPoints -= points;
             SharedPreferences sharedPrefEdit = getSharedPreferences("Code_Challenge", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefEdit.edit();
             editor.putInt(key, currentPoints);

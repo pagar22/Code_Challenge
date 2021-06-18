@@ -27,6 +27,8 @@
         <activity android:name=".NicheTasksAdd"/>
         <activity android:name=".PointsTally"/>
         <activity android:name=".Registration"/>
+        <activity android:name=".QuickStart"/>
+        <activity android:name=".Profile"/>
 
     </application>
 

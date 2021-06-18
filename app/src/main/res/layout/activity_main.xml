@@ -5,13 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#ffffff">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/welcomeText"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:text=""
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:textColor="@color/colorPrimary"
+            android:textAlignment="center"/>
+        <Button
+            android:id="@+id/profile"
+            android:layout_width="90dp"
+            android:layout_height="80dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/welcomeText"
+            android:drawableTop="@drawable/user_profile"
+            android:padding="8dp"
+            android:background="@drawable/theme_button" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/niche_tasks"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_margin="10dp"
         android:background="@drawable/theme_button"
         android:clickable="true">
 
@@ -24,11 +52,13 @@
             android:textColor="#ffffff"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/reminders"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_margin="10dp"
         android:background="@drawable/theme_button_opp"
         android:clickable="true">
 
@@ -41,7 +71,5 @@
             android:textColor="#ffffff"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
-
-
 
 </LinearLayout>

@@ -32,7 +32,7 @@ public class NicheTasksObject {
     public String toString(){
         return "Department: " + title + '\n'
                 + "Task: " + description + '\n'
-                + "Assigned To: " + assignedTo.toString()
+                + "Assigned to: " + assignedTo.toString()
                 .replace("[", "").replace("]","") + '\n'
                 + "Deadline: " + date;
     }

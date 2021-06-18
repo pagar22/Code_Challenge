@@ -25,7 +25,7 @@ public class PointsTally extends AppCompatActivity {
         setContentView(R.layout.points_tally);
 
         SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_APPEND);
-        final int members = sharedPreferences.getInt("members", 3);
+        final int members = sharedPreferences.getInt("members", 0);
 
         //linear layout for all columns
         linearLayout = findViewById(R.id.pointsTallyView);
@@ -41,9 +41,10 @@ public class PointsTally extends AppCompatActivity {
             );
             nameParams.setMargins(100,50,100,50);
             nameParams.addRule(RelativeLayout.ABOVE, R.id.pointsTallyButtonView); //does not work because of linear layout constraints
+            nameParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             Button nameButton = new Button(getApplicationContext());
             nameButton.setId(i);
-            String memberName = sharedPreferences.getString("member"+i+"Name", "Aaryan");
+            String memberName = sharedPreferences.getString("member"+i+"Name", "");
             setButton(nameButton, memberName);
             nameButton.setLayoutParams(nameParams);
             relativeLayout.addView(nameButton);
@@ -52,19 +53,20 @@ public class PointsTally extends AppCompatActivity {
             RelativeLayout.LayoutParams pointParams = new RelativeLayout.LayoutParams(
                     300, ViewGroup.LayoutParams.WRAP_CONTENT
             );
-            pointParams.setMargins(100,50,100,50);
+            pointParams.setMargins(20,50,50,50);
             pointParams.addRule(RelativeLayout.RIGHT_OF, i);
             Button pointsButton = new Button(getApplicationContext());
             pointsButton.setId(counter); //increment counter value for next iteration
-            int memberPoints = sharedPreferences.getInt(memberName+"Points", 2);
+            int memberPoints = sharedPreferences.getInt(memberName+"Points", 0);
             setButton(pointsButton, Integer.toString(memberPoints));
             pointsButton.setLayoutParams(pointParams);
             relativeLayout.addView(pointsButton);
 
             //star images
             RelativeLayout.LayoutParams starParams = new RelativeLayout.LayoutParams(500, 150);
-            starParams.setMargins(50,50,100,50);
+            starParams.setMargins(50,50,50,50);
             starParams.addRule(RelativeLayout.RIGHT_OF, counter);
+            starParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             ImageView stars = new ImageView(getApplicationContext());
             String quality = "";
 
@@ -90,7 +92,7 @@ public class PointsTally extends AppCompatActivity {
             }
 
             final String finalQuality = quality;
-            stars.setOnClickListener(new View.OnClickListener() {
+            relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getApplicationContext(), finalQuality, Toast.LENGTH_LONG).show();
@@ -100,6 +102,16 @@ public class PointsTally extends AppCompatActivity {
             relativeLayout.addView(stars);
 
             linearLayout.addView(relativeLayout);
+
+            //for line under every row
+            LinearLayout.LayoutParams lineParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 4);
+            lineParams.setMargins(5,0,5,0);
+            View line = new View(getApplicationContext());
+            line.setBackground(getDrawable(R.color.colorPrimary));
+            line.setLayoutParams(lineParams);
+            linearLayout.addView(line);
+
             counter++;
         }
 

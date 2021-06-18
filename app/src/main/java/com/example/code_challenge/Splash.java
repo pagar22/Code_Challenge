@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Splash extends AppCompatActivity {
 
-    private int splash_time = 3000;
+    private int splash_time = 2000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,10 +21,13 @@ public class Splash extends AppCompatActivity {
 
                 SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_APPEND);
                 boolean isRegistered = sharedPreferences.getBoolean("isRegistered", false);
+
                 //if registered, goto Main else goto registration page
-                Intent splashIntent = //(isRegistered)?
-                        new Intent(getApplicationContext(), MainActivity.class);
-                        //: new Intent(getApplicationContext(), Registration.class);
+                Intent splashIntent;
+                if(isRegistered)
+                    splashIntent = new Intent(getApplicationContext(), MainActivity.class);
+                else
+                    splashIntent = new Intent(getApplicationContext(), Registration.class);
                 startActivity(splashIntent);
                 finish();
             }

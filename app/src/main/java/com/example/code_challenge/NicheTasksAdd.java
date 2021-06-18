@@ -47,12 +47,12 @@ public class NicheTasksAdd extends AppCompatActivity {
         //for checkboxes
         LinearLayout linearLayout = findViewById(R.id.checkboxView);
         SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_APPEND);
-        int members = sharedPreferences.getInt("members", 2);
+        int members = sharedPreferences.getInt("members", 0);
         for(int i=1; i<=members;i++){
             final CheckBox checkBox = new CheckBox(getApplicationContext());
             checkBox.setId(i);
             String key = "member" + i + "Name";
-            checkBox.setText(sharedPreferences.getString(key, "Aaryan"));
+            checkBox.setText(sharedPreferences.getString(key, ""));
             linearLayout.addView(checkBox);
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

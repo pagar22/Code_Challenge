@@ -75,7 +75,7 @@ public class NicheTasks extends AppCompatActivity {
                 //open dialog to set new niche task
                 if(button.getText().equals("ADD A NICHE NOW!")){
                     final EditText editText = new EditText(getApplicationContext());
-                    editText.setInputType(InputType.TYPE_CLASS_TEXT);
+                    editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
                     new AlertDialog.Builder(NicheTasks.this)
                             .setTitle("Enter Niche Name")
                             .setView(editText)
@@ -93,7 +93,8 @@ public class NicheTasks extends AppCompatActivity {
                                             || input.trim().equalsIgnoreCase(buttonOne)
                                             || input.trim().equalsIgnoreCase(buttonTwo)
                                             || input.trim().equalsIgnoreCase(buttonThree)
-                                            || input.trim().equalsIgnoreCase(buttonFour))
+                                            || input.trim().equalsIgnoreCase(buttonFour)
+                                            || input.equals("ADD A NICHE NOW!"))
                                         Toast.makeText(getApplicationContext(),
                                                 "Please enter a valid name (no blanks, no repeats)", Toast.LENGTH_LONG).show();
                                     else {
@@ -158,7 +159,8 @@ public class NicheTasks extends AppCompatActivity {
                                             || input.trim().equalsIgnoreCase(buttonOne)
                                             || input.trim().equalsIgnoreCase(buttonTwo)
                                             || input.trim().equalsIgnoreCase(buttonThree)
-                                            || input.trim().equalsIgnoreCase(buttonFour))
+                                            || input.trim().equalsIgnoreCase(buttonFour)
+                                            || input.equals("ADD A NICHE NOW!"))
                                         Toast.makeText(getApplicationContext(),
                                                 "Please enter a valid new name (no blanks, no repeats)", Toast.LENGTH_LONG).show();
                                     else {
