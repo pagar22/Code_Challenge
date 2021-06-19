@@ -79,7 +79,7 @@ public class NicheTasks extends AppCompatActivity {
                     new AlertDialog.Builder(NicheTasks.this)
                             .setTitle("Enter Niche Name")
                             .setView(editText)
-
+                            .setIcon(R.drawable.create)
                             .setPositiveButton("ADD!", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -137,12 +137,12 @@ public class NicheTasks extends AppCompatActivity {
                 else{
                     final String existingName = button.getText().toString();
                     final EditText editText = new EditText(getApplicationContext());
-                    editText.setInputType(InputType.TYPE_CLASS_TEXT);
+                    editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                     editText.setText(existingName);
                     new AlertDialog.Builder(NicheTasks.this)
                             .setTitle("Niche Settings")
                             .setView(editText)
-
+                            .setIcon(R.drawable.settings)
                             .setPositiveButton("RENAME", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

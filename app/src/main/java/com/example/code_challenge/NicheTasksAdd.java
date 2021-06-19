@@ -82,7 +82,12 @@ public class NicheTasksAdd extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                time = hourOfDay + " : " + minute;
+
+                                if(hourOfDay >= 0 && hourOfDay <= 9) time = "0" + hourOfDay + " : " + minute;
+                                if(minute >= 0 && minute <= 9) time = hourOfDay + " : " + "0" + minute;
+                                if((hourOfDay >= 0 && hourOfDay <= 9) && (minute >= 0 && minute <= 9))
+                                    time = "0" + hourOfDay + " : 0" + minute;
+
                                 timePickText.setText(time);
                             }
                         }, hour, min, true);

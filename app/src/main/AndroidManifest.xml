@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
 
@@ -26,10 +27,10 @@
         <activity android:name=".NicheTasksList"/>
         <activity android:name=".NicheTasksAdd"/>
         <activity android:name=".PointsTally"/>
-        <activity android:name=".Registration"/>
+        <activity android:name=".Registration"
+            android:noHistory="true"/>
         <activity android:name=".QuickStart"/>
         <activity android:name=".Profile"/>
 
     </application>
-
 </manifest>

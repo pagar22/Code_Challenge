@@ -74,19 +74,19 @@ public class PointsTally extends AppCompatActivity {
                 stars.setImageResource(R.drawable.one_star);
                 quality = "One Star :( You need to put more effort";
             }
-            else if(memberPoints>20 && memberPoints<=40) {
+            else if(memberPoints > 20 && memberPoints <= 40) {
                 stars.setImageResource(R.drawable.two_star);
                 quality = "Two Stars :( You're getting there";
             }
-            else if(memberPoints>40 && memberPoints<=60) {
+            else if(memberPoints > 40 && memberPoints <= 60) {
                 stars.setImageResource(R.drawable.three_star);
                 quality = "Three Stars :| Your contributions are valuable!";
             }
-            else if(memberPoints>60 && memberPoints<=80) {
+            else if(memberPoints > 60 && memberPoints <= 80) {
                 stars.setImageResource(R.drawable.four_star);
                 quality = "Four Stars :) You're a key family member!";
             }
-            else if(memberPoints>80) {
+            else if(memberPoints > 80) {
                 stars.setImageResource(R.drawable.five_star);
                 quality = "Five Stars :) YOU RUN THE HOUSE!";
             }

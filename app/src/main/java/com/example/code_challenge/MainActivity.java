@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,6 +28,20 @@ public class MainActivity extends AppCompatActivity {
 
         //code to reset shared preferences
         //getSharedPreferences("Code_Challenge", MODE_PRIVATE).edit().clear().commit();
+
+        //simple if statement to display snackbar if user has just registered
+        if(getIntent().getBooleanExtra("firstTimeLogin", false)){
+            Snackbar.make(findViewById(R.id.mainActivityView),
+                    "Welcome to MyMommy! Begin your journey by visiting the quickstart guide", Snackbar.LENGTH_LONG)
+                    .setDuration(8000)
+                    .setAction("GUIDE", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getApplicationContext(), QuickStart.class);
+                            startActivity(intent);
+                        }
+                    }).show();
+        }
 
         niche_tasks = findViewById(R.id.niche_tasks);
         reminders = findViewById(R.id.reminders);

@@ -78,6 +78,7 @@ public class NicheTasksList extends AppCompatActivity {
                 new AlertDialog.Builder(NicheTasksList.this)
                         .setTitle(getIntent.getStringExtra("TaskName")+" Task")
                         .setMessage(nicheTask.toString())
+                        .setIcon(R.drawable.create)
                         .setNeutralButton("Done", null)
                         .show();
             }
@@ -90,6 +91,7 @@ public class NicheTasksList extends AppCompatActivity {
                  new AlertDialog.Builder(NicheTasksList.this)
                          .setTitle("Task Settings")
                          .setMessage("Delete this task or mark it as overdue/completed. Points will be deducted/rewarded accordingly.")
+                         .setIcon(R.drawable.settings)
                          .setPositiveButton("Completed", new DialogInterface.OnClickListener() {
                              @Override
                              public void onClick(DialogInterface dialog, int which) {

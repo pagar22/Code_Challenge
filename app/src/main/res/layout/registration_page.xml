@@ -33,6 +33,7 @@
             android:textSize="25sp"
             android:textColor= "@color/colorAccent"
             android:hint="Enter your family name..."
+            android:inputType="textCapSentences"
             android:imeOptions="actionDone"
             android:padding="15dp"
             android:layout_margin="20dp"/>

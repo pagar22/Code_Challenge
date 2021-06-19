@@ -102,18 +102,11 @@ public class Registration extends AppCompatActivity {
                             editor.putString("FamilyName", familyNameString);
                             editor.putString("member" + i + "Name", s);
                             editor.putBoolean("isRegistered", true);
+                            editor.putBoolean("profilePicture", false);
                             editor.commit();
 
-                            Snackbar.make(findViewById(R.id.registrationView),
-                                    "Welcome to MyMommy! Begin your journey by visiting the quickstart guide", Snackbar.LENGTH_LONG)
-                                    .setAction("GUIDE", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Intent intent = new Intent(getApplicationContext(), QuickStart.class);
-                                            startActivity(intent);
-                                        }
-                                    }).show();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.putExtra("firstTimeLogin", true);
                             startActivity(intent);
                         }
                     }
@@ -155,7 +148,7 @@ public class Registration extends AppCompatActivity {
             editText.setHint("Enter Name " + i);
             editText.setLayoutParams(layoutParams);
             editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-            editText.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+            editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
             linearLayout.addView(editText);
         }
     }
