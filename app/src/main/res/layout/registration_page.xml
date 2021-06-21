@@ -89,7 +89,7 @@
                 android:text="REGISTER!"
                 android:textStyle="bold"
                 android:textColor="#ffffff"
-                android:background="@drawable/theme_button" />
+                android:background="@drawable/go_button" />
         </RelativeLayout>
     </RelativeLayout>
 

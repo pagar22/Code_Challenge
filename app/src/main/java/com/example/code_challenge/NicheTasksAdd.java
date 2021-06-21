@@ -87,6 +87,7 @@ public class NicheTasksAdd extends AppCompatActivity {
                                 if(minute >= 0 && minute <= 9) time = hourOfDay + " : " + "0" + minute;
                                 if((hourOfDay >= 0 && hourOfDay <= 9) && (minute >= 0 && minute <= 9))
                                     time = "0" + hourOfDay + " : 0" + minute;
+                                if(hourOfDay > 9 && minute > 9) time = hourOfDay + " : " + minute;
 
                                 timePickText.setText(time);
                             }

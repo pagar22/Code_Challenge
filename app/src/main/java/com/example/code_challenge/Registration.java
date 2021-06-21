@@ -87,7 +87,7 @@ public class Registration extends AppCompatActivity {
 
                 String familyNameString = familyName.getText().toString();
                 if(familyNameString.equals("") || familyNameString.length()>10)
-                    Toast.makeText(getApplicationContext(), "Please enter a valid family name (no blanks, 1-10)", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Please enter a valid family name (no blanks, no &, 1-10)", Toast.LENGTH_LONG).show();
                 else {
                     //flag to check if loop was run or not (loop won't run if selection = '--')
                     boolean flag = false;
@@ -96,7 +96,7 @@ public class Registration extends AppCompatActivity {
                         EditText editText = findViewById(i);
                         String s = editText.getText().toString();
                         if (s.equals("")||s.length()>10)
-                            Toast.makeText(getApplicationContext(), "Please enter valid nicknames (no blanks, 1-10)", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Please enter valid nicknames (no blanks, no &, 1-10)", Toast.LENGTH_LONG).show();
                         else {
                             editor.putInt("members", familyMembers);
                             editor.putString("FamilyName", familyNameString);
@@ -122,7 +122,7 @@ public class Registration extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "We hope to see you soon!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "We hope to see you back soon!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

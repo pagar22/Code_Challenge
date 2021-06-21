@@ -31,6 +31,10 @@
             android:noHistory="true"/>
         <activity android:name=".QuickStart"/>
         <activity android:name=".Profile"/>
+        <activity android:name=".MMCWinner"
+            android:noHistory="true"/>
+
+        <receiver android:name=".NotificationBroadcastBuilder"/>
 
     </application>
 </manifest>

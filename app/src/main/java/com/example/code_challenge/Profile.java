@@ -101,9 +101,9 @@ public class Profile extends AppCompatActivity {
 
             //members' names
             RelativeLayout.LayoutParams memberParams = new RelativeLayout.LayoutParams(
-                    450, RelativeLayout.LayoutParams.WRAP_CONTENT
+                    300, RelativeLayout.LayoutParams.WRAP_CONTENT
             );
-            memberParams.setMargins(100,50,100,50);
+            memberParams.setMargins(120,50,30,50);
 
             String memberName = sharedPreferences.getString("member"+i+"Name", "");
             TextView member = new TextView(getApplicationContext());
@@ -116,7 +116,7 @@ public class Profile extends AppCompatActivity {
             RelativeLayout.LayoutParams cupParams = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT
             );
-            cupParams.setMargins(100,50,40,50);
+            cupParams.setMargins(60,50,40,50);
             cupParams.addRule(RelativeLayout.RIGHT_OF, i);
 
             int memberCups = sharedPreferences.getInt(memberName+"MMC", 0);
