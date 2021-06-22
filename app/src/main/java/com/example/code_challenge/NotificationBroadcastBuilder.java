@@ -23,7 +23,7 @@ public class NotificationBroadcastBuilder extends BroadcastReceiver {
 
         NotificationCompat.Builder builder= new NotificationCompat.Builder(context, "code_challenge")
                 .setSmallIcon(R.drawable.my_mommy_icon)
-                .setContentTitle("MyMommy Season # " + seasonNumber+ " Results!")
+                .setContentTitle("MyMommy Season Results!")
                 .setContentText("The current MyMommy season is now complete! Click here to see who topped the charts.")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(onClickIntent)

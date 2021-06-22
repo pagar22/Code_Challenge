@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
@@ -25,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +43,7 @@ public class PointsTally extends AppCompatActivity {
         //linear layout for all columns
         linearLayout = findViewById(R.id.pointsTallyView);
 
-        int counter = 5; //relativ view ID for pointsButton, since i can't exceed 4, counter = 5
+        int counter = 5; //relative view ID for pointsButton, since i can't exceed 4, counter = 5
         for(int i=1; i<=members; i++){
             //relative layout for each row
             RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
@@ -54,7 +52,7 @@ public class PointsTally extends AppCompatActivity {
             RelativeLayout.LayoutParams nameParams = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT
             );
-            nameParams.setMargins(100,50,100,50);
+            nameParams.setMargins(100,60,100,50);
             nameParams.addRule(RelativeLayout.ABOVE, R.id.pointsTallyButtonView); //does not work because of linear layout constraints
             nameParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             Button nameButton = new Button(getApplicationContext());
@@ -69,7 +67,7 @@ public class PointsTally extends AppCompatActivity {
                     250, ViewGroup.LayoutParams.WRAP_CONTENT
             );
             pointParams.setMargins(20,50,50,50);
-            pointParams.addRule(RelativeLayout.RIGHT_OF, i);
+            pointParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             Button pointsButton = new Button(getApplicationContext());
             pointsButton.setId(counter); //increment counter value for next iteration
             int memberPoints = sharedPreferences.getInt(memberName+"Points", 0);
@@ -78,8 +76,8 @@ public class PointsTally extends AppCompatActivity {
             relativeLayout.addView(pointsButton);
 
             //star images
-            RelativeLayout.LayoutParams starParams = new RelativeLayout.LayoutParams(500, 150);
-            starParams.setMargins(50,50,50,50);
+            RelativeLayout.LayoutParams starParams = new RelativeLayout.LayoutParams(250, 100);
+            starParams.setMargins(50,65,50,50);
             starParams.addRule(RelativeLayout.RIGHT_OF, counter);
             starParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             ImageView stars = new ImageView(getApplicationContext());
@@ -136,7 +134,7 @@ public class PointsTally extends AppCompatActivity {
             public void onClick(View v) {
                 new AlertDialog.Builder(PointsTally.this)
                         .setTitle("Reset Points Tally")
-                        .setMessage("Are you sure you want to reset all points to zero?")
+                        .setMessage("All member(s)' current points will be reset to zero. Are you sure you want to continue?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -154,17 +152,18 @@ public class PointsTally extends AppCompatActivity {
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
                                 dialog.cancel();
                             }
                         }).show();
             }
         });
 
-        Button home = findViewById(R.id.pointsTallyHome);
-        home.setOnClickListener(new View.OnClickListener() {
+        Button insight = findViewById(R.id.pointsTallyInsight);
+        insight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), QuickStart.class);
                 startActivity(intent);
             }
         });
@@ -238,17 +237,30 @@ public class PointsTally extends AppCompatActivity {
                 else if (mmcOnGoing){
 
                     String seasonDetailsFull = sharedPreferences.getString(mmcSeasonNumber + "Incentive", "");
-                    String seasonDeatils = "";
+                    String seasonDetails = "";
                     int startIndex = seasonDetailsFull.indexOf("General Incentive");
-                    int endIndex = seasonDetailsFull.lastIndexOf("LET THE GAMES BEGIN!");
+                    int endIndex = seasonDetailsFull.lastIndexOf("Duration");
                     if(startIndex != -1 && endIndex != -1)
-                        seasonDeatils = seasonDetailsFull.substring(startIndex, endIndex);
+                        seasonDetails = seasonDetailsFull.substring(startIndex, endIndex);
+
+                    String duration = "Duration: ";
+                    double remainingTime = actionTime - System.currentTimeMillis();
+                    //if remaining time is more than a week
+                    if(remainingTime >= 604800000) {
+                        remainingTime = Math.round((remainingTime / 604800000) * 1000D) / 1000D;
+                        duration += remainingTime + " weeks left for season's end.";
+                    }
+                    else {
+                        remainingTime = Math.round((remainingTime / 86400000) * 1000D) / 1000D; //divide by days instead of weeks
+                        duration += remainingTime + " days left for season's end.";
+                    }
 
                     new AlertDialog.Builder(PointsTally.this)
                             .setTitle("Ongoing Season")
-                            .setMessage("A MyMommy season is currently ongoing. Details include:" + '\n'
-                                    + '\n' + "Kindly wait until season the end date or terminate it prematurely.")
-                            .setIcon(R.drawable.trophy)
+                            .setMessage("A MyMommy season is currently ongoing. Note the following details:" + '\n'
+                                    + '\n' + seasonDetails + duration + '\n'
+                                    + '\n' + "Kindly wait until the season's end date or terminate it prematurely.")
+                            .setIcon(R.drawable.warning)
                             .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -262,8 +274,7 @@ public class PointsTally extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Ending Season Prematurely... Please click on the notification above to view the results", Toast.LENGTH_LONG).show();
 
                                     Intent intent = new Intent(getApplicationContext(), NotificationBroadcastBuilder.class);
-                                    int updatedSeasonNumber = sharedPreferences.getInt("seasonMMC", 1);
-                                    intent.putExtra("season_number", updatedSeasonNumber);
+                                    intent.putExtra("season_number", mmcSeasonNumber);
                                     PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
 
                                     AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -275,6 +286,7 @@ public class PointsTally extends AppCompatActivity {
                                     );
 
                                     //change system status
+                                    //rest is handled by MMCWinner.class
                                     editor.remove("actionTimeMMC");
 
                                     finish();
@@ -338,7 +350,7 @@ public class PointsTally extends AppCompatActivity {
 
                     new AlertDialog.Builder(PointsTally.this)
                             .setTitle("Start a new MyMommy Season")
-                            .setMessage("Please fill out the incentive details and duration for " + mmcSeasonString)
+                            .setMessage("Please fill out the incentive and duration details for " + mmcSeasonString)
                             .setIcon(R.drawable.trophy)
                             .setView(linearLayout)
                             .setPositiveButton("KICK OFF!", new DialogInterface.OnClickListener() {
@@ -359,9 +371,17 @@ public class PointsTally extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), "Duration of season is a mandatory field", Toast.LENGTH_LONG).show();
 
                                     else{
+
+                                        //reset all points to zero
+                                        for(int i=1; i<=members; i++){
+                                            String memberName = sharedPreferences.getString("member"+i+"Name", "");
+                                            editor.putInt(memberName + "Points", 0);
+                                            editor.remove(memberName + "PointsOnSeasonEnd");
+                                        }
+
                                         String myMommySeasonDetails = "Hello " + sharedPreferences.getString("FamilyName", "Family") + "s, " + '\n'
                                                 + "This message is to inform you that " + mmcSeasonString +
-                                                " is now underway! Please note the following incentive details and duration for this season. All the best!" + '\n' + '\n';
+                                                " is now underway! Please note the following incentive and duration details for this season. All the best!" + '\n' + '\n';
                                         myMommySeasonDetails += "General Incentive: " + '\n'
                                                 + generalIncentiveString + '\n';
 
@@ -386,7 +406,7 @@ public class PointsTally extends AppCompatActivity {
                                         else actionTimeInMillis = 1000L * 5259600L; //2 months in milliseconds
 
                                         //for testing only
-                                        actionTimeInMillis = 1000 * 25; //notification will be sent in 15seconds
+                                        actionTimeInMillis = 1000 * 30; //notification will be sent in 15seconds
 
                                         myMommySeasonDetails += "Duration: " + duration + '\n';
 
@@ -398,7 +418,6 @@ public class PointsTally extends AppCompatActivity {
                                         editor.putString(mmcSeasonNumber + "Incentive", myMommySeasonDetails);
                                         editor.putLong("actionTimeMMC", (currentTimeInMillis + actionTimeInMillis));
                                         editor.commit();
-                                        mmc.setText(mmcSeasonString + "IS ON");
 
                                         //notification intent
                                         Intent intent = new Intent(getApplicationContext(), NotificationBroadcastBuilder.class);

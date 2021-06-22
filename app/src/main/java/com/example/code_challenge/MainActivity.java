@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         reminders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startIntent(Reminders.class);
+                startIntent(PointsTally.class);
             }
         });
 

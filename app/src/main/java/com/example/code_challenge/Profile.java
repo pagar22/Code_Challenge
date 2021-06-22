@@ -144,7 +144,7 @@ public class Profile extends AppCompatActivity {
             public void onClick(View v) {
                 new AlertDialog.Builder(Profile.this)
                         .setTitle("Confirm Logout")
-                        .setMessage("Logging out of MyMommy will permanently delete all current tasks, reminders, points and profile data. Are you sure you want to continue?")
+                        .setMessage("Logging out of MyMommy will permanently delete all current tasks, points and profile data. Are you sure you want to continue?")
                         .setIcon(R.drawable.warning)
                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override

@@ -49,12 +49,33 @@ public class NicheTasks extends AppCompatActivity {
         runButtonLongClick(three, "three");
         runButtonLongClick(four, "four");
 
-        Button pointsTally = findViewById(R.id.pointsTally);
-        pointsTally.setOnClickListener(new View.OnClickListener() {
+        Button resetAll = findViewById(R.id.nicheTasksReset);
+        resetAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), PointsTally.class);
-                startActivity(intent);
+
+                new AlertDialog.Builder(NicheTasks.this)
+                        .setTitle("Reset Niche Tasks")
+                        .setMessage("All current niche tasks and their task lists will be permanently reset. Are you sure you want to continue?")
+                        .setIcon(R.drawable.warning)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                resetNicheTask(one, "one");
+                                resetNicheTask(two, "two");
+                                resetNicheTask(three, "three");
+                                resetNicheTask(four, "four");
+
+                                Toast.makeText(getApplicationContext(), "All niche tasks were reset", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+                                dialog.cancel();
+                            }
+                        }).show();
             }
         });
     }
@@ -181,15 +202,9 @@ public class NicheTasks extends AppCompatActivity {
                             .setNeutralButton("DELETE", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.remove(key);
-                                    editor.remove("TaskList"+button.getText().toString());
-                                    editor.commit();
-
+                                    resetNicheTask(button, key);
                                     Toast.makeText(getApplicationContext(),
                                             "Deleted "+button.getText().toString()+" Niche", Toast.LENGTH_SHORT).show();
-                                    button.setText("ADD A NICHE NOW!");
                                 }
                             })
                             .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -205,5 +220,15 @@ public class NicheTasks extends AppCompatActivity {
                 return true;
             }
         });
+
+    }
+
+    private void resetNicheTask(Button button, String key){
+        SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(key);
+        editor.remove("TaskList"+button.getText().toString());
+        editor.commit();
+        button.setText("ADD A NICHE NOW!");
     }
 }

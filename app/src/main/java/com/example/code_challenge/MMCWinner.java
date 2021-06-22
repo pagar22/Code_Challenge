@@ -93,7 +93,7 @@ public class MMCWinner extends AppCompatActivity {
             }
             description = '\n' + "With " + maxPoints + " points, " + maxMember + " have won MyMommy Season # " + mmcSeason
                     + ". Winners are now eligible to claim the following rewards: " + '\n'
-                    + incentiveDetails + '\n'
+                    + '\n' + incentiveDetails + '\n'
                     + "Keep putting similar effort into vital housework tasks to win more MyMommy Cups."
                     + " All the best for future seasons!" + '\n'
                     + "- The MyMommy Team";
@@ -102,7 +102,7 @@ public class MMCWinner extends AppCompatActivity {
             editor.putInt(maxMember + "MMC", currentMMCWins + 1);
             description = '\n' + "With " + maxPoints + " points, " + maxMember + " has won MyMommy Season # " + mmcSeason
                     + ". You are now eligible to claim the following rewards: " + '\n'
-                    + incentiveDetails + '\n'
+                    + '\n' + incentiveDetails + '\n'
                     + "You have won" + (currentMMCWins + 1) + " MyMommy Cups. Keep putting similar effort into vital housework tasks to win more."
                     + " All the best for future seasons!" + '\n'
                     + "- The MyMommy Team";
@@ -116,13 +116,6 @@ public class MMCWinner extends AppCompatActivity {
         editor.putBoolean("ongoingMMC", false);
         editor.putString(mmcSeason + "Incentive", "");
         editor.putLong("actionTimeMMC", Long.MAX_VALUE);
-
-        //reset all points to zero
-        for(int i=1; i<=familyMembers; i++){
-            String memberName = sharedPreferencesAppend.getString("member"+i+"Name", "");
-            editor.putInt(memberName + "Points", 0);
-            editor.remove(memberName + "PointsOnSeasonEnd");
-        }
 
         editor.commit();
 
