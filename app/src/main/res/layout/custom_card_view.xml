@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="0dp"
+    android:padding="0dp">
+
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/customCardView"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginBottom="5dp"
+        card_view:cardPreventCornerOverlap="true"
+        card_view:cardElevation="20dp"
+        card_view:cardCornerRadius="20dp" >
+
+        <RelativeLayout
+            android:id="@+id/cardViewRL"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:gravity="center_vertical"
+            android:descendantFocusability="blocksDescendants"
+            android:focusable="false" >
+
+            <ImageView
+                android:id="@+id/cardViewImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/round_image_view"
+                android:src="@drawable/niche_tasks"
+                android:layout_marginLeft="10dp"
+                android:padding="15dp" />
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:padding="10dp"
+                android:layout_below="@id/cardViewImage"
+                android:text="MORE..."
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:background="@drawable/theme_button" />
+            <TextView
+                android:id="@+id/cardViewDescription"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/cardViewImage"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:text="Wash the dishes"
+                android:textSize="28sp"
+                android:textColor="@color/colorPrimary"
+                android:singleLine="true"/>
+
+            <TextView
+                android:id="@+id/cardViewAssign"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cardViewDescription"
+                android:layout_toRightOf="@+id/cardViewImage"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Assigned to: Aaryan"
+                android:textSize="20sp"
+                android:singleLine="true"/>
+
+            <TextView
+                android:id="@+id/cardViewDate"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cardViewAssign"
+                android:layout_toRightOf="@+id/cardViewImage"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:text="02:10 | 25/6/2021"
+                android:textSize="20sp"
+                android:singleLine="true"/>
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

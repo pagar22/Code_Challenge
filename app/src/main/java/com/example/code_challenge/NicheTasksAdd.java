@@ -128,6 +128,16 @@ public class NicheTasksAdd extends AppCompatActivity {
                     String title = getIntent.getStringExtra("TaskName");
                     NicheTasksObject taskObject = new NicheTasksObject(title, description.getText().toString(),
                             assignedTo, time + " | " + date);
+
+                    //to increment no. of active niche tasks
+                    SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    int currentTasks = sharedPreferences.getInt("activeNicheTasks", 0);
+                    if(currentTasks != 0)
+                        editor.putInt("activeNicheTasks", currentTasks + 1);
+                    editor.commit();
+
                     NicheTasksList.noItemText.setText("");
                     NicheTasksList.nicheTasks.add(taskObject);
                     NicheTasksList.arrayAdapter.notifyDataSetChanged();

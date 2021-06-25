@@ -4,21 +4,31 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class NicheTasksList extends AppCompatActivity {
@@ -42,7 +52,50 @@ public class NicheTasksList extends AppCompatActivity {
         heading.setText(title);
 
         listView = findViewById(R.id.itemList);
-        arrayAdapter = new ArrayAdapter(NicheTasksList.this, android.R.layout.simple_list_item_1, nicheTasks);
+        arrayAdapter = new ArrayAdapter<NicheTasksObject>
+                (NicheTasksList.this, R.layout.custom_card_view, nicheTasks){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent){
+
+                LayoutInflater layoutInflater = getLayoutInflater();
+                View view = layoutInflater.inflate(R.layout.custom_card_view, null, true);
+                NicheTasksObject tasksObject = nicheTasks.get(position);
+
+                //set image
+                ImageView imageView = view.findViewById(R.id.cardViewImage);
+                Random random = new Random();
+                int choice = random.nextInt(4);
+                switch (choice){
+                    case 0: imageView.setImageDrawable(getDrawable(R.drawable.broom));
+                    break;
+                    case 1: imageView.setImageDrawable(getDrawable(R.drawable.cooking));
+                        break;
+                    case 2: imageView.setImageDrawable(getDrawable(R.drawable.laundry));
+                        break;
+                    case 3: imageView.setImageDrawable(getDrawable(R.drawable.dishes));
+                        break;
+                }
+
+                //set description
+                TextView description = view.findViewById(R.id.cardViewDescription);
+                description.setText(tasksObject.description);
+
+                //set assignedTo
+                TextView assignedTo = view.findViewById(R.id.cardViewAssign);
+                String assignedTOString = "Assigned to: " + tasksObject.assignedTo.toString()
+                        .replace("[", "").replace("]","");
+                assignedTo.setText(assignedTOString);
+
+                //set date
+                TextView date = view.findViewById(R.id.cardViewDate);
+                date.setText(tasksObject.date);
+
+                CardView cardView = view.findViewById(R.id.customCardView);
+                cardView.setBackgroundColor(Color.WHITE);
+
+                return view;
+            }
+        };
         listView.setAdapter(arrayAdapter);
 
         noItemText = findViewById(R.id.noItemText);
@@ -74,13 +127,27 @@ public class NicheTasksList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                NicheTasksObject nicheTask = (NicheTasksObject) listView.getItemAtPosition(position);
+                final NicheTasksObject nicheTask = (NicheTasksObject) listView.getItemAtPosition(position);
                 new AlertDialog.Builder(NicheTasksList.this)
                         .setTitle(getIntent.getStringExtra("TaskName")+" Task")
                         .setMessage(nicheTask.toString())
                         .setIcon(R.drawable.create)
-                        .setNeutralButton("Done", null)
+                        .setPositiveButton("Done", null)
+                        .setNegativeButton("Share", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent sendIntent = new Intent();
+                                sendIntent.setAction(Intent.ACTION_SEND);
+                                sendIntent.putExtra(Intent.EXTRA_TITLE, "You've been assigned with a "+title+" title!");
+                                sendIntent.putExtra(Intent.EXTRA_TEXT, nicheTask.toString());
+                                sendIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+                                sendIntent.setType("text/plain");
+                                Intent shareIntent = Intent.createChooser(sendIntent, title);
+                                startActivity(shareIntent);
+                            }
+                        })
                         .show();
+
             }
         });
 
@@ -125,6 +192,8 @@ public class NicheTasksList extends AppCompatActivity {
         arrayAdapter.notifyDataSetChanged();
         SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        //to decrement no. of active niche tasks
         int currentTasks = sharedPreferences.getInt("activeNicheTasks", 0);
         if(currentTasks != 0)
             editor.putInt("activeNicheTasks", currentTasks - 1);

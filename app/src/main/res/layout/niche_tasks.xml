@@ -46,7 +46,7 @@
             android:textSize="20sp"
             android:layout_below="@id/text"
             android:background="@drawable/theme_button_opp"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/task2"
@@ -59,7 +59,7 @@
             android:layout_below="@+id/text"
             android:layout_toRightOf="@+id/task1"
             android:background="@drawable/theme_button"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/task3"

@@ -110,6 +110,14 @@ public class Profile extends AppCompatActivity {
                                     editor.commit();
                                     familyName.setText(newName + "s");
                                     Toast.makeText(getApplicationContext(), "Family Name changed to "+newName, Toast.LENGTH_LONG).show();
+
+
+                                    //refresh the activity after editing
+                                    Intent intent = new Intent(getApplicationContext(), Profile.class);
+                                    finish();
+                                    overridePendingTransition(0,0);
+                                    startActivity(intent);
+                                    overridePendingTransition(0,0);
                                 }
                             }
                         })
