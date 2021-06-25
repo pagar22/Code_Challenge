@@ -152,7 +152,7 @@ public class Profile extends AppCompatActivity {
 
             int memberCups = sharedPreferences.getInt(memberName+"MMC", 0);
             TextView cups = new TextView(getApplicationContext());
-            if(memberCups<=100) setView(cups, "League wins: "+memberCups);
+            if(memberCups <= 100) setView(cups, "League wins: "+memberCups);
             else setView(cups, "League wins: " + "100+");
             cups.setLayoutParams(cupParams);
             relativeLayout.addView(cups);
@@ -185,6 +185,7 @@ public class Profile extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), Registration.class);
                                 //kill activity back-stack
+                                finishAffinity();
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             }

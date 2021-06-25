@@ -25,6 +25,17 @@
             android:textSize="50sp"
             android:textColor="@color/colorPrimary"/>
 
+                        <TextView
+                            android:id="@+id/noNicheText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_centerInParent="true"
+                            android:padding="10dp"
+                            android:layout_margin="20dp"
+                            android:textSize="25sp"
+                            android:textColor="#8F949B" />
+
         <Button
             android:id="@+id/task1"
             android:layout_width="160dp"
@@ -34,7 +45,8 @@
             android:textColor="#ffffff"
             android:textSize="20sp"
             android:layout_below="@id/text"
-            android:background="@drawable/theme_button_opp" />
+            android:background="@drawable/theme_button_opp"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/task2"
@@ -46,7 +58,8 @@
             android:textSize="20sp"
             android:layout_below="@+id/text"
             android:layout_toRightOf="@+id/task1"
-            android:background="@drawable/theme_button" />
+            android:background="@drawable/theme_button"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/task3"
@@ -57,7 +70,8 @@
             android:textColor="#ffffff"
             android:textSize="20sp"
             android:layout_below="@+id/task1"
-            android:background="@drawable/theme_button_opp" />
+            android:background="@drawable/theme_button_opp"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/task4"
@@ -69,7 +83,8 @@
             android:textSize="20sp"
             android:layout_below="@+id/task2"
             android:layout_toRightOf="@+id/task3"
-            android:background="@drawable/theme_button" />
+            android:background="@drawable/theme_button"
+            android:visibility="invisible" />
 
         <RelativeLayout
             android:id="@+id/buttonLayout"

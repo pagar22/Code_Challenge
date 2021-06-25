@@ -18,8 +18,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.snackbar.Snackbar;
-
 public class Registration extends AppCompatActivity {
 
     RelativeLayout relativeLayout; //bigger view

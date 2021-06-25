@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,15 +18,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class NicheTasks extends AppCompatActivity {
 
     Button one;
     Button two;
     Button three;
     Button four;
+
+    TextView noNicheText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -36,26 +36,28 @@ public class NicheTasks extends AppCompatActivity {
         two = findViewById(R.id.task2);
         three = findViewById(R.id.task3);
         four = findViewById(R.id.task4);
+        noNicheText = findViewById(R.id.noNicheText);
 
-        setButtonText(one, "one");
-        setButtonText(two, "two");
-        setButtonText(three, "three");
-        setButtonText(four, "four");
+        setButton(one, "one");
+        setButton(two, "two");
+        setButton(three, "three");
+        setButton(four, "four");
 
 
-        runButton(one, "one");
-        runButton(two, "two");
-        runButton(three, "three");
-        runButton(four, "four");
+        runButton(one);
+        runButton(two);
+        runButton(three);
+        runButton(four);
 
         runButtonLongClick(one, "one");
         runButtonLongClick(two, "two");
         runButtonLongClick(three, "three");
         runButtonLongClick(four, "four");
 
+        setNoNicheText();
+
         //bottom nav
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
         //NicheTasks item
         bottomNavigationView.setSelectedItemId(R.id.NicheTasksNav);
 
@@ -88,188 +90,227 @@ public class NicheTasks extends AppCompatActivity {
             }
         });
 
+        //add button
+        Button add = findViewById(R.id.nicheTasksAdd);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(one.getVisibility() == View.INVISIBLE)
+                    addButton(one, "one");
+                else if(two.getVisibility() == View.INVISIBLE)
+                    addButton(two, "two");
+                else if(three.getVisibility() == View.INVISIBLE)
+                    addButton(three, "three");
+                else
+                    addButton(four, "four");
+
+            }
+        });
+
         //reset button
         Button resetAll = findViewById(R.id.nicheTasksReset);
         resetAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                new AlertDialog.Builder(NicheTasks.this)
-                        .setTitle("Reset Niche Tasks")
-                        .setMessage("All current niche tasks and their task lists will be permanently reset. Are you sure you want to continue?")
-                        .setIcon(R.drawable.warning)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                resetNicheTask(one, "one");
-                                resetNicheTask(two, "two");
-                                resetNicheTask(three, "three");
-                                resetNicheTask(four, "four");
+                if (!noNicheText.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please add a niche first!", Toast.LENGTH_SHORT).show();
+                } else {
+                    new AlertDialog.Builder(NicheTasks.this)
+                            .setTitle("Reset Niche Tasks")
+                            .setMessage("All current niche tasks and their task lists will be permanently reset. Are you sure you want to continue?")
+                            .setIcon(R.drawable.warning)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    deleteButton(one, "one");
+                                    deleteButton(two, "two");
+                                    deleteButton(three, "three");
+                                    deleteButton(four, "four");
 
-                                Toast.makeText(getApplicationContext(), "All niche tasks were reset", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
-                                dialog.cancel();
-                            }
-                        }).show();
+                                    Toast.makeText(getApplicationContext(), "All niche tasks were reset", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+                                    dialog.cancel();
+                                }
+                            }).show();
+                }
             }
         });
     }
 
-    private void setButtonText(Button button, String key){
+    private void setButton(Button button, String key){
         SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_APPEND);
         String string= sharedPreferences.getString(key, "");
         if(string.equals(""))
-            button.setText("ADD A NICHE NOW!");
-        else
+            button.setVisibility(View.INVISIBLE);
+        else {
+            button.setVisibility(View.VISIBLE);
             button.setText(string);
+        }
     }
 
-    private void runButton(final Button button, final String key){
+    private void addButton(final Button button, final String key){
+        final EditText editText = new EditText(getApplicationContext());
+        editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        editText.setHint("(eg. Kitchen)");
+        new AlertDialog.Builder(NicheTasks.this)
+                .setTitle("Enter A Niche Title")
+                .setView(editText)
+                .setIcon(R.drawable.create)
+                .setPositiveButton("ADD!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String buttonOne = one.getText().toString();
+                        String buttonTwo = two.getText().toString();
+                        String buttonThree = three.getText().toString();
+                        String buttonFour = four.getText().toString();
+
+                        String input = editText.getText().toString();
+                        if (input.equals("")
+                                || input.trim().equalsIgnoreCase(buttonOne)
+                                || input.trim().equalsIgnoreCase(buttonTwo)
+                                || input.trim().equalsIgnoreCase(buttonThree)
+                                || input.trim().equalsIgnoreCase(buttonFour)
+                                || input.equals("ADD A NICHE NOW!"))
+                            Toast.makeText(getApplicationContext(),
+                                    "Please enter a valid name (no blanks, no repeats)", Toast.LENGTH_LONG).show();
+                        else {
+                            SharedPreferences sharedPreferences =
+                                    getSharedPreferences("Code_Challenge", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(key, editText.getText().toString());
+                            editor.commit();
+                            button.setVisibility(View.VISIBLE);
+                            button.setText(editText.getText().toString());
+                            setNoNicheText();
+                        }
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(),
+                                "Cancelled", Toast.LENGTH_SHORT).show();
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
+
+    private void runButton(final Button button){
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //open dialog to set new niche task
-                if(button.getText().equals("ADD A NICHE NOW!")){
-                    final EditText editText = new EditText(getApplicationContext());
-                    editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-                    new AlertDialog.Builder(NicheTasks.this)
-                            .setTitle("Enter Niche Name")
-                            .setView(editText)
-                            .setIcon(R.drawable.create)
-                            .setPositiveButton("ADD!", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    String buttonOne = one.getText().toString();
-                                    String buttonTwo = two.getText().toString();
-                                    String buttonThree = three.getText().toString();
-                                    String buttonFour = four.getText().toString();
 
-                                    String input = editText.getText().toString();
-                                    if (input.equals("")
-                                            || input.trim().equalsIgnoreCase(buttonOne)
-                                            || input.trim().equalsIgnoreCase(buttonTwo)
-                                            || input.trim().equalsIgnoreCase(buttonThree)
-                                            || input.trim().equalsIgnoreCase(buttonFour)
-                                            || input.equals("ADD A NICHE NOW!"))
-                                        Toast.makeText(getApplicationContext(),
-                                                "Please enter a valid name (no blanks, no repeats)", Toast.LENGTH_LONG).show();
-                                    else {
-                                        SharedPreferences sharedPreferences =
-                                                getSharedPreferences("Code_Challenge", MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putString(key, editText.getText().toString());
-                                        editor.commit();
-                                        button.setText(editText.getText().toString());
-                                    }
-                                }
-                            })
-                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(getApplicationContext(),
-                                            "Cancelled", Toast.LENGTH_SHORT).show();
-                                    dialog.cancel();
-                                }
-                            })
-                            .show();
-                }
-                //else open existing task activity
-                else{
-                    Intent intent = new Intent(getApplicationContext(), NicheTasksList.class);
-                    intent.putExtra("TaskName", button.getText().toString());
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(getApplicationContext(), NicheTasksList.class);
+                intent.putExtra("TaskName", button.getText().toString());
+                startActivity(intent);
+
             }
         });
     }
 
-    private void runButtonLongClick(final Button button, final String key){
+    private void runButtonLongClick(final Button button, final String key) {
         button.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(button.getText().equals("ADD A NICHE NOW!"))
-                    Toast.makeText(getApplicationContext(), "Please set the niche first", Toast.LENGTH_LONG).show();
-                    //open dialog to delete/edit existing niche
-                else{
-                    final String existingName = button.getText().toString();
-                    final EditText editText = new EditText(getApplicationContext());
-                    editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-                    editText.setText(existingName);
-                    new AlertDialog.Builder(NicheTasks.this)
-                            .setTitle("Niche Settings")
-                            .setView(editText)
-                            .setIcon(R.drawable.settings)
-                            .setPositiveButton("RENAME", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    String buttonOne = one.getText().toString();
-                                    String buttonTwo = two.getText().toString();
-                                    String buttonThree = three.getText().toString();
-                                    String buttonFour = four.getText().toString();
+                final String existingName = button.getText().toString();
+                final EditText editText = new EditText(getApplicationContext());
+                editText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+                editText.setText(existingName);
+                new AlertDialog.Builder(NicheTasks.this)
+                        .setTitle("Niche Settings")
+                        .setView(editText)
+                        .setIcon(R.drawable.settings)
+                        .setPositiveButton("RENAME", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String buttonOne = one.getText().toString();
+                                String buttonTwo = two.getText().toString();
+                                String buttonThree = three.getText().toString();
+                                String buttonFour = four.getText().toString();
 
-                                    String input = editText.getText().toString();
-                                    if(input.trim().equalsIgnoreCase(existingName))
-                                        Toast.makeText(getApplicationContext(),
-                                                "No changes found!", Toast.LENGTH_SHORT).show();
-                                    else if (input.equals("")
-                                            || input.trim().equalsIgnoreCase(buttonOne)
-                                            || input.trim().equalsIgnoreCase(buttonTwo)
-                                            || input.trim().equalsIgnoreCase(buttonThree)
-                                            || input.trim().equalsIgnoreCase(buttonFour)
-                                            || input.equals("ADD A NICHE NOW!"))
-                                        Toast.makeText(getApplicationContext(),
-                                                "Please enter a valid new name (no blanks, no repeats)", Toast.LENGTH_LONG).show();
-                                    else {
-                                        String newName = editText.getText().toString();
-                                        //will overwrite existing name since key is same
-                                        SharedPreferences sharedPreferencesEdit =
-                                                getSharedPreferences("Code_Challenge", MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = sharedPreferencesEdit.edit();
-
-                                        NicheTasksObject.save(getApplicationContext(), newName);
-
-                                        editor.putString(key, editText.getText().toString());
-                                        editor.commit();
-                                        button.setText(newName);
-                                    }
-                                }
-                            })
-                            .setNeutralButton("DELETE", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    resetNicheTask(button, key);
+                                String input = editText.getText().toString();
+                                if (input.trim().equalsIgnoreCase(existingName))
                                     Toast.makeText(getApplicationContext(),
-                                            "Deleted "+button.getText().toString()+" Niche", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                                            "No changes found!", Toast.LENGTH_SHORT).show();
+                                else if (input.equals("")
+                                        || input.trim().equalsIgnoreCase(buttonOne)
+                                        || input.trim().equalsIgnoreCase(buttonTwo)
+                                        || input.trim().equalsIgnoreCase(buttonThree)
+                                        || input.trim().equalsIgnoreCase(buttonFour))
                                     Toast.makeText(getApplicationContext(),
-                                            "Cancelled", Toast.LENGTH_SHORT).show();
-                                    dialog.cancel();
+                                            "Please enter a valid new name (no blanks, no repeats)", Toast.LENGTH_LONG).show();
+                                else {
+                                    String newName = editText.getText().toString();
+                                    //will overwrite existing name since key is same
+                                    SharedPreferences sharedPreferencesEdit =
+                                            getSharedPreferences("Code_Challenge", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferencesEdit.edit();
+                                    editor.putString(key, editText.getText().toString());
+                                    editor.commit();
+
+                                    NicheTasksObject.save(getApplicationContext(), newName);
+                                    button.setText(newName);
                                 }
-                            })
-                            .show();
-                }
+                            }
+                        })
+                        .setNeutralButton("DELETE", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteButton(button, key);
+                                Toast.makeText(getApplicationContext(),
+                                        "Deleted " + button.getText().toString() + " Niche", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getApplicationContext(),
+                                        "Cancelled", Toast.LENGTH_SHORT).show();
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
                 return true;
             }
         });
 
     }
 
-    private void resetNicheTask(Button button, String key){
+    private void deleteButton(Button button, String key){
         SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(key);
         editor.remove("TaskList"+button.getText().toString());
-        editor.putInt("activeNicheTasks", 0);
         editor.commit();
-        button.setText("ADD A NICHE NOW!");
+        button.setVisibility(View.INVISIBLE);
+
+        //refresh the activity after deleting
+        Intent intent = new Intent(getApplicationContext(), NicheTasks.class);
+        finish();
+        overridePendingTransition(0,0);
+        startActivity(intent);
+        overridePendingTransition(0,0);
+
+        setNoNicheText();
     }
+
+    private void setNoNicheText(){
+        if((one.getVisibility() == View.INVISIBLE)
+                && (two.getVisibility() == View.INVISIBLE)
+                && (three.getVisibility() == View.INVISIBLE)
+                && (four.getVisibility() == View.INVISIBLE))
+            noNicheText.setText("Get started by adding a new niche!");
+        else
+            noNicheText.setText("");
+    }
+
+
 }

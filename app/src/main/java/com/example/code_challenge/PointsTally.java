@@ -129,7 +129,7 @@ public class PointsTally extends AppCompatActivity {
 
             if (memberPoints < 0 || memberPoints <= 20) {
                 stars.setImageResource(R.drawable.one_star);
-                quality = "One Star :( You need to put more effort";
+                quality = "One Star :( You need to put in more effort";
             }
             else if(memberPoints > 20 && memberPoints <= 40) {
                 stars.setImageResource(R.drawable.two_star);
