@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         //simple if statement to display snackbar if user has just registered
         if(getIntent().getBooleanExtra("firstTimeLogin", false)){
-            Snackbar.make(findViewById(R.id.mainActivityView),
+            Snackbar.make(findViewById(R.id.welcomPageView),
                     "Welcome to MyMommy! Begin your journey by visiting the quickstart guide", Snackbar.LENGTH_LONG)
                     .setDuration(8000)
                     .setAction("GUIDE", new View.OnClickListener() {
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             welcomeSeasonText.setText("MyMommy League Season #" + seasonNumber + " is ongoing. Visit billboard to see the table toppers!");
         }
         else
-            welcomeSeasonText.setText("A MyMommy season isn't active :( Visit billboard now to start a new one!");
+            welcomeSeasonText.setText("No MyMommy season is currently active :(" + '\n' + "Visit billboard now to start a new one now!");
 
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);

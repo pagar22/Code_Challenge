@@ -184,6 +184,8 @@ public class Profile extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "We're sad to see you go :(",
                                         Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), Registration.class);
+                                //kill activity back-stack
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             }
                         })
