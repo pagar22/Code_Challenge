@@ -5,13 +5,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -49,6 +53,42 @@ public class NicheTasks extends AppCompatActivity {
         runButtonLongClick(three, "three");
         runButtonLongClick(four, "four");
 
+        //bottom nav
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        //NicheTasks item
+        bottomNavigationView.setSelectedItemId(R.id.NicheTasksNav);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.HomeNav:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                    case R.id.NicheTasksNav:
+                        return true;
+                    case R.id.BillboardNav:
+                        startActivity(new Intent(getApplicationContext(), PointsTally.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                    case R.id.ProfileNav:
+                        startActivity(new Intent(getApplicationContext(), Profile.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+
+                }
+
+                return false;
+            }
+        });
+
+        //reset button
         Button resetAll = findViewById(R.id.nicheTasksReset);
         resetAll.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,7 +194,7 @@ public class NicheTasks extends AppCompatActivity {
             public boolean onLongClick(View v) {
                 if(button.getText().equals("ADD A NICHE NOW!"))
                     Toast.makeText(getApplicationContext(), "Please set the niche first", Toast.LENGTH_LONG).show();
-                //open dialog to delete/edit existing niche
+                    //open dialog to delete/edit existing niche
                 else{
                     final String existingName = button.getText().toString();
                     final EditText editText = new EditText(getApplicationContext());
@@ -228,6 +268,7 @@ public class NicheTasks extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(key);
         editor.remove("TaskList"+button.getText().toString());
+        editor.putInt("activeNicheTasks", 0);
         editor.commit();
         button.setText("ADD A NICHE NOW!");
     }

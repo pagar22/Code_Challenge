@@ -123,6 +123,13 @@ public class NicheTasksList extends AppCompatActivity {
     private NicheTasksObject deleteItem(int position){
         NicheTasksObject tasksObject = nicheTasks.remove(position);
         arrayAdapter.notifyDataSetChanged();
+        SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        int currentTasks = sharedPreferences.getInt("activeNicheTasks", 0);
+        if(currentTasks != 0)
+            editor.putInt("activeNicheTasks", currentTasks - 1);
+
+        editor.commit();
         NicheTasksObject.save(getApplicationContext(), title);
 
         if(nicheTasks.size()==0)

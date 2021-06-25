@@ -7,4 +7,6 @@
     <color name="themeButtonLight">#7f5a83</color>
     <color name="themeButtonDark">#0d324d</color>
 
+    <color name="white">#ffffff</color>
+
 </resources>

@@ -46,6 +46,8 @@ public class NicheTasksObject {
                 context.getSharedPreferences("Code_Challenge", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putStringSet("TaskList"+title, resultSet);
+        int currentTasks = sharedPreferences.getInt("activeNicheTasks", 0);
+        editor.putInt("activeNicheTasks", currentTasks + resultSet.size());
         editor.commit();
     }
 

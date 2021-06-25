@@ -5,6 +5,9 @@ import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -27,7 +31,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class PointsTally extends AppCompatActivity {
 
@@ -39,6 +46,43 @@ public class PointsTally extends AppCompatActivity {
 
         final SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_APPEND);
         final int members = sharedPreferences.getInt("members", 0);
+
+
+        //bottom nav
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        //PointsTally item
+        bottomNavigationView.setSelectedItemId(R.id.BillboardNav);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.HomeNav:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                    case R.id.NicheTasksNav:
+                        startActivity(new Intent(getApplicationContext(), NicheTasks.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                    case R.id.BillboardNav:
+                        return true;
+                    case R.id.ProfileNav:
+                        startActivity(new Intent(getApplicationContext(), Profile.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+
+                }
+
+                return false;
+            }
+        });
+
 
         //linear layout for all columns
         linearLayout = findViewById(R.id.pointsTallyView);
@@ -245,29 +289,28 @@ public class PointsTally extends AppCompatActivity {
 
                     String duration = "Duration: ";
                     double remainingTime = actionTime - System.currentTimeMillis();
-                    //if remaining time is more than a week
-                    if(remainingTime >= 604800000) {
-                        remainingTime = Math.round((remainingTime / 604800000) * 1000D) / 1000D;
-                        duration += remainingTime + " weeks left for season's end.";
+                    //if remaining time is more than one day
+                    if(remainingTime >= 86400000) {
+                        remainingTime = Math.ceil(remainingTime / 86400000D);
+                        duration += "The season will end in " + (long)remainingTime + " days.";
                     }
                     else {
-                        remainingTime = Math.round((remainingTime / 86400000) * 1000D) / 1000D; //divide by days instead of weeks
-                        duration += remainingTime + " days left for season's end.";
+                        duration +=  " The season will end toady!";
                     }
-
+                    final String details = seasonDetails + '\n' + duration;
                     new AlertDialog.Builder(PointsTally.this)
                             .setTitle("Ongoing Season")
                             .setMessage("A MyMommy season is currently ongoing. Note the following details:" + '\n'
-                                    + '\n' + seasonDetails + duration + '\n'
+                                    + '\n' + details + '\n'
                                     + '\n' + "Kindly wait until the season's end date or terminate it prematurely.")
                             .setIcon(R.drawable.warning)
-                            .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                            .setPositiveButton("Done", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.cancel();
                                 }
                             })
-                            .setNegativeButton("End Prematurely", new DialogInterface.OnClickListener() {
+                            .setNeutralButton("End Prematurely", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
@@ -291,7 +334,22 @@ public class PointsTally extends AppCompatActivity {
 
                                     finish();
                                 }
-                            }).show();
+                            })
+                            .setNegativeButton("Copy details", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    ClipboardManager clipboardManager =
+                                            (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                                    ClipData clipData = ClipData.newPlainText("simple text", details);
+                                    assert clipboardManager != null;
+                                    clipboardManager.setPrimaryClip(clipData);
+
+                                    Toast.makeText(getApplicationContext(), "Season details were copied to your clipboard!", Toast.LENGTH_LONG).show();
+
+                                }
+                            })
+                            .show();
                 }
                 //to start a new season
                 else {
@@ -406,7 +464,7 @@ public class PointsTally extends AppCompatActivity {
                                         else actionTimeInMillis = 1000L * 5259600L; //2 months in milliseconds
 
                                         //for testing only
-                                        actionTimeInMillis = 1000 * 30; //notification will be sent in 15seconds
+                                        //actionTimeInMillis = 1000 * 15; //season will end in 15 seconds
 
                                         myMommySeasonDetails += "Duration: " + duration + '\n';
 

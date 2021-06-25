@@ -1,20 +1,12 @@
 package com.example.code_challenge;
 
-import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.Image;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 import android.text.InputType;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,10 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.IOException;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Profile extends AppCompatActivity {
 
@@ -37,6 +31,43 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile);
+
+
+        //bottom nav
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        //Profile item
+        bottomNavigationView.setSelectedItemId(R.id.ProfileNav);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.HomeNav:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                    case R.id.NicheTasksNav:
+                        startActivity(new Intent(getApplicationContext(), NicheTasks.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                    case R.id.BillboardNav:
+
+                        startActivity(new Intent(getApplicationContext(), PointsTally.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                    case R.id.ProfileNav:
+                        return true;
+
+                }
+
+                return false;
+            }
+        });
 
         SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_APPEND);
 
@@ -116,13 +147,13 @@ public class Profile extends AppCompatActivity {
             RelativeLayout.LayoutParams cupParams = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT
             );
-            cupParams.setMargins(60,50,40,50);
+            cupParams.setMargins(80,50,40,50);
             cupParams.addRule(RelativeLayout.RIGHT_OF, i);
 
             int memberCups = sharedPreferences.getInt(memberName+"MMC", 0);
             TextView cups = new TextView(getApplicationContext());
-            if(memberCups<=100) setView(cups, "MM League wins: "+memberCups);
-            else setView(cups, "MM League wins: " + "100+");
+            if(memberCups<=100) setView(cups, "League wins: "+memberCups);
+            else setView(cups, "League wins: " + "100+");
             cups.setLayoutParams(cupParams);
             relativeLayout.addView(cups);
 

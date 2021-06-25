@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/HomeNav"
+        android:title="Home"
+        android:icon="@drawable/home" />
+
+    <item
+        android:id="@+id/NicheTasksNav"
+        android:title="Niche Tasks"
+        android:icon="@drawable/niche_tasks" />
+
+    <item
+        android:id="@+id/BillboardNav"
+        android:title="Billboard"
+        android:icon="@drawable/billboard" />
+
+    <item
+        android:id="@+id/ProfileNav"
+        android:title="Profile"
+        android:icon="@drawable/user_profile" />
+
+</menu>
