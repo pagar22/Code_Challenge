@@ -11,7 +11,7 @@
         android:id="@+id/customCardView"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         card_view:cardPreventCornerOverlap="true"
         card_view:cardElevation="20dp"
         card_view:cardCornerRadius="20dp" >

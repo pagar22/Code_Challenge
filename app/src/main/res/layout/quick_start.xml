@@ -1,15 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:background="#ffffff">
 
-
-    <Button
+    <TextView
         android:id="@+id/quickStartHome"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:text="SKIP"
+        android:textColor="@color/colorPrimary"
+        android:layout_alignParentStart="true"
+        android:layout_margin="25dp"/>
+    <TextView
+        android:id="@+id/quickStartTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home"
-        android:textColor="#ffffff"
-        android:background="@drawable/theme_button"/>
-</LinearLayout>
+        android:textColor="@color/colorPrimary"
+        android:textSize="35sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="40dp"
+        android:text="Niche Tasks"
+        android:layout_centerHorizontal="true"/>
+    <ImageView
+        android:id="@+id/quickStartImage1"
+        android:layout_width="180dp"
+        android:layout_height="280dp"
+        android:layout_margin="10dp"
+        android:layout_below="@id/quickStartTitle" />
+
+    <ImageView
+        android:id="@+id/quickStartImage2"
+        android:layout_width="180dp"
+        android:layout_height="280dp"
+        android:layout_margin="10dp"
+        android:layout_below="@id/quickStartTitle"
+        android:layout_toRightOf="@id/quickStartImage1"/>
+    <TextView
+        android:id="@+id/quickStartDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_below="@+id/quickStartImage1"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"/>
+
+    <ImageView
+        android:id="@+id/quickStartProgress"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:padding="10dp"
+        android:layout_below="@id/quickStartDescription"
+        android:layout_centerHorizontal="true"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/quickStartProgress"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp">
+
+        <Button
+            android:id="@+id/previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Previous"
+            android:padding="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/theme_button_opp"
+            android:textColor="@color/white"
+            android:layout_alignParentStart="true"/>
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:padding="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/theme_button"
+            android:textColor="@color/white"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -31,6 +31,9 @@ public class Splash extends AppCompatActivity {
                 else
                     splashIntent = new Intent(getApplicationContext(), Registration.class);
 
+
+
+                //for MyMommy Season
                 long currentTimeInMillis = System.currentTimeMillis();
                 long actionTimeInFuture = sharedPreferences.getLong("actionTimeMMC", Long.MAX_VALUE);
 

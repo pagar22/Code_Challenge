@@ -69,5 +69,17 @@
             android:background="@drawable/theme_button"
             android:layout_margin="40dp"
             android:padding="15dp"/>
+        <Button
+            android:id="@+id/homeWinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HOME"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            android:background="@drawable/theme_button"
+            android:layout_margin="40dp"
+            android:padding="15dp"
+            android:visibility="invisible"/>
+
     </LinearLayout>
 </ScrollView>

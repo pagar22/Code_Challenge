@@ -39,6 +39,7 @@ public class NicheTasksList extends AppCompatActivity {
 
     Button addMB;
     static TextView noItemText;
+    static ImageView noItemImage;
     String title;
 
     @Override
@@ -99,13 +100,16 @@ public class NicheTasksList extends AppCompatActivity {
         listView.setAdapter(arrayAdapter);
 
         noItemText = findViewById(R.id.noItemText);
+        noItemImage = findViewById(R.id.noTasksImage);
         SharedPreferences sharedPrefAppend = getSharedPreferences("Code_Challenge", MODE_APPEND);
         Set<String> decoy = new HashSet<>();
         Set<String> set = sharedPrefAppend.getStringSet("TaskList"+title, decoy);
 
         nicheTasks.clear();
-        if(set.size()==0)
+        if(set.size()==0) {
             noItemText.setText(R.string.no_item_text);
+            noItemImage.setVisibility(View.VISIBLE);
+        }
         else {
             for (String s : set)
                 nicheTasks.add(NicheTasksObject.parser(s));
@@ -201,8 +205,10 @@ public class NicheTasksList extends AppCompatActivity {
         editor.commit();
         NicheTasksObject.save(getApplicationContext(), title);
 
-        if(nicheTasks.size()==0)
+        if(nicheTasks.size()==0) {
             noItemText.setText(R.string.no_item_text);
+            noItemImage.setVisibility(View.VISIBLE);
+        }
         return tasksObject;
     }
 

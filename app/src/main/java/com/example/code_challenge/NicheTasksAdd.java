@@ -134,11 +134,11 @@ public class NicheTasksAdd extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
                     int currentTasks = sharedPreferences.getInt("activeNicheTasks", 0);
-                    if(currentTasks != 0)
-                        editor.putInt("activeNicheTasks", currentTasks + 1);
+                    editor.putInt("activeNicheTasks", currentTasks + 1);
                     editor.commit();
 
                     NicheTasksList.noItemText.setText("");
+                    NicheTasksList.noItemImage.setVisibility(View.INVISIBLE);
                     NicheTasksList.nicheTasks.add(taskObject);
                     NicheTasksList.arrayAdapter.notifyDataSetChanged();
                     NicheTasksObject.save(getApplicationContext(), title);

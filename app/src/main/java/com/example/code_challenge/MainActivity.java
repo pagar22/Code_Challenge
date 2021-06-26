@@ -8,17 +8,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.material.badge.BadgeDrawable;
+import com.example.code_challenge.QuickStart.QuickStart1;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_page);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("MyMommy");
+
 
         //code to reset shared preferences
         //getSharedPreferences("Code_Challenge", MODE_PRIVATE).edit().clear().commit();
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                     .setAction("GUIDE", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(getApplicationContext(), QuickStart.class);
+                            Intent intent = new Intent(getApplicationContext(), QuickStart1.class);
                             startActivity(intent);
                         }
                     }).show();
@@ -79,7 +78,19 @@ public class MainActivity extends AppCompatActivity {
         boolean season = sharedPreferences.getBoolean("ongoingMMC", false);
         if(season){
             int seasonNumber = sharedPreferences.getInt("seasonMMC", 1);
-            welcomeSeasonText.setText("MyMommy League Season #" + seasonNumber + " is ongoing. Visit billboard to see the table toppers!");
+            long actionTime = sharedPreferences.getLong("actionTimeMMC", Long.MAX_VALUE);
+            String duration = "";
+            double remainingTime = actionTime - System.currentTimeMillis();
+            //if remaining time is more than one day
+            if(remainingTime >= 86400000) {
+                remainingTime = Math.ceil(remainingTime / 86400000D);
+                duration += (long)remainingTime + " days!";
+                welcomeSeasonText.setText("MyMommy League Season #" + seasonNumber + " is ongoing and will end in" + duration + " Visit billboard to see the table toppers!");
+            }
+            else {
+                welcomeSeasonText.setText("MyMommy League Season #" + seasonNumber + " is ongoing and will end today!" + duration + " Visit billboard to see the table toppers!");
+
+            }
         }
         else
             welcomeSeasonText.setText("No MyMommy season is currently active :(" + '\n' + "Visit billboard now to start a new one now!");

@@ -11,12 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity android:name=".MainActivity">
 
         </activity>
 
-        <activity android:name=".Splash">
+        <activity android:name=".Splash"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +29,9 @@
         <activity android:name=".PointsTally"/>
         <activity android:name=".Registration"
             android:noHistory="true"/>
-        <activity android:name=".QuickStart"/>
+        <activity android:name=".QuickStart.QuickStart1"/>
+        <activity android:name=".QuickStart.QuickStart2"/>
+        <activity android:name=".QuickStart.QuickStart3"/>
         <activity android:name=".Profile"/>
         <activity android:name=".MMCWinner"
             android:noHistory="true"/>

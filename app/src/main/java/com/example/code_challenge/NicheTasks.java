@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,25 +19,31 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Objects;
+
 public class NicheTasks extends AppCompatActivity {
 
     Button one;
     Button two;
     Button three;
     Button four;
+    Button add;
 
     TextView noNicheText;
+    ImageView noNicheImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.niche_tasks);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Niche Tasks");
 
         one = findViewById(R.id.task1);
         two = findViewById(R.id.task2);
         three = findViewById(R.id.task3);
         four = findViewById(R.id.task4);
         noNicheText = findViewById(R.id.noNicheText);
+        noNicheImage = findViewById(R.id.noNicheImage);
 
         setButton(one, "one");
         setButton(two, "two");
@@ -91,19 +98,26 @@ public class NicheTasks extends AppCompatActivity {
         });
 
         //add button
-        Button add = findViewById(R.id.nicheTasksAdd);
+        add = findViewById(R.id.nicheTasksAdd);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(one.getVisibility() == View.INVISIBLE)
-                    addButton(one, "one");
-                else if(two.getVisibility() == View.INVISIBLE)
-                    addButton(two, "two");
-                else if(three.getVisibility() == View.INVISIBLE)
-                    addButton(three, "three");
-                else
-                    addButton(four, "four");
+                if((one.getVisibility() == View.VISIBLE)
+                        && (two.getVisibility() == View.VISIBLE)
+                        && (three.getVisibility() == View.VISIBLE)
+                        && (four.getVisibility() == View.VISIBLE))
+                    Toast.makeText(getApplicationContext(), "Maximum capacity reached :( Delete a niche before adding a new one.", Toast.LENGTH_LONG).show();
+                else {
+                    if (one.getVisibility() == View.INVISIBLE)
+                        addButton(one, "one");
+                    else if (two.getVisibility() == View.INVISIBLE)
+                        addButton(two, "two");
+                    else if (three.getVisibility() == View.INVISIBLE)
+                        addButton(three, "three");
+                    else
+                        addButton(four, "four");
+                }
 
             }
         });
@@ -189,6 +203,7 @@ public class NicheTasks extends AppCompatActivity {
                             button.setVisibility(View.VISIBLE);
                             button.setText(editText.getText().toString());
                             setNoNicheText();
+                            refresh();
                         }
                     }
                 })
@@ -293,11 +308,7 @@ public class NicheTasks extends AppCompatActivity {
         button.setVisibility(View.INVISIBLE);
 
         //refresh the activity after deleting
-        Intent intent = new Intent(getApplicationContext(), NicheTasks.class);
-        finish();
-        overridePendingTransition(0,0);
-        startActivity(intent);
-        overridePendingTransition(0,0);
+        refresh();
 
         setNoNicheText();
     }
@@ -306,10 +317,25 @@ public class NicheTasks extends AppCompatActivity {
         if((one.getVisibility() == View.INVISIBLE)
                 && (two.getVisibility() == View.INVISIBLE)
                 && (three.getVisibility() == View.INVISIBLE)
-                && (four.getVisibility() == View.INVISIBLE))
+                && (four.getVisibility() == View.INVISIBLE)) {
             noNicheText.setText("Get started by adding a new niche!");
-        else
+            noNicheImage.setVisibility(View.VISIBLE);
+
+        }
+        else {
             noNicheText.setText("");
+            noNicheImage.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void refresh(){
+
+        Intent intent = new Intent(getApplicationContext(), NicheTasks.class);
+        finish();
+        overridePendingTransition(0,0);
+        startActivity(intent);
+        overridePendingTransition(0,0);
+
     }
 
 

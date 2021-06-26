@@ -34,7 +34,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.code_challenge.QuickStart.QuickStart1;
+import com.example.code_challenge.QuickStart.QuickStart2;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Objects;
 
 public class PointsTally extends AppCompatActivity {
 
@@ -43,10 +47,12 @@ public class PointsTally extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.points_tally);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Billboard");
 
         final SharedPreferences sharedPreferences = getSharedPreferences("Code_Challenge", MODE_APPEND);
-        final int members = sharedPreferences.getInt("members", 0);
-
+        String familyName = sharedPreferences.getString("FamilyName", "Family");
+        TextView heading = findViewById(R.id.headingBillboard);
+        heading.setText(familyName + "s' Billboard");
 
         //bottom nav
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -87,6 +93,7 @@ public class PointsTally extends AppCompatActivity {
         //linear layout for all columns
         linearLayout = findViewById(R.id.pointsTallyView);
 
+        final int members = sharedPreferences.getInt("members", 0);
         int counter = 5; //relative view ID for pointsButton, since i can't exceed 4, counter = 5
         for(int i=1; i<=members; i++){
             //relative layout for each row
@@ -102,7 +109,12 @@ public class PointsTally extends AppCompatActivity {
             Button nameButton = new Button(getApplicationContext());
             nameButton.setId(i);
             String memberName = sharedPreferences.getString("member"+i+"Name", "");
-            setButton(nameButton, memberName);
+            //if i is odd (1 or 3) then set background as hollow
+            if(i%2 != 0)
+                setButton(nameButton, memberName, true);
+            //else set background with theme
+            else
+                setButton(nameButton, memberName, false);
             nameButton.setLayoutParams(nameParams);
             relativeLayout.addView(nameButton);
 
@@ -115,7 +127,10 @@ public class PointsTally extends AppCompatActivity {
             Button pointsButton = new Button(getApplicationContext());
             pointsButton.setId(counter); //increment counter value for next iteration
             int memberPoints = sharedPreferences.getInt(memberName+"Points", 0);
-            setButton(pointsButton, Integer.toString(memberPoints));
+            if(i%2 != 0)
+                setButton(pointsButton, Integer.toString(memberPoints), true);
+            else
+                setButton(pointsButton, Integer.toString(memberPoints), false);
             pointsButton.setLayoutParams(pointParams);
             relativeLayout.addView(pointsButton);
 
@@ -207,7 +222,7 @@ public class PointsTally extends AppCompatActivity {
         insight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), QuickStart.class);
+                Intent intent = new Intent(getApplicationContext(), QuickStart2.class);
                 startActivity(intent);
             }
         });
@@ -522,11 +537,19 @@ public class PointsTally extends AppCompatActivity {
 
     }
 
-    private void setButton(Button button, String name){
+    private void setButton(Button button, String name, boolean type){
         button.setText(name);
-        button.setTextColor(Color.WHITE);
         button.setPadding(20,20,20,20);
-        button.setBackground(getDrawable(R.drawable.theme_button));
+        //type = true = hollow butotn
+        if(type) {
+            button.setBackground(getDrawable(R.drawable.hollow_button));
+            button.setTextColor(getColor(R.color.colorPrimary));
+        }
+        //else theme button
+        else {
+            button.setBackground(getDrawable(R.drawable.theme_button));
+            button.setTextColor(Color.WHITE);
+        }
         button.setClickable(false);
     }
 

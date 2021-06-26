@@ -5,13 +5,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".NicheTasks">
+    tools:context=".NicheTasks"
+    android:background="@color/white">
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
         <TextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
@@ -20,71 +22,91 @@
             android:layout_centerHorizontal="true"
             android:padding="10dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="60dp"
             android:text="NICHE TASKS"
             android:textSize="50sp"
             android:textColor="@color/colorPrimary"/>
-
+                    <ImageView
+                        android:id="@+id/noNicheImage"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/empty_state"
+                        android:layout_below="@id/text"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="invisible"/>
                         <TextView
                             android:id="@+id/noNicheText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:layout_below="@+id/noNicheImage"
                             android:layout_centerInParent="true"
                             android:padding="10dp"
                             android:layout_margin="20dp"
                             android:textSize="25sp"
                             android:textColor="#8F949B" />
 
-        <Button
+
+                        <Button
             android:id="@+id/task1"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:padding="15dp"
             android:elevation="50dp"
-            android:textColor="#ffffff"
-            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textSize="25sp"
             android:layout_below="@id/text"
-            android:background="@drawable/theme_button_opp"
+            android:background="@drawable/theme_button"
             android:visibility="visible" />
 
         <Button
             android:id="@+id/task2"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:padding="15dp"
             android:elevation="50dp"
-            android:textColor="#ffffff"
-            android:textSize="20sp"
-            android:layout_below="@+id/text"
-            android:layout_toRightOf="@+id/task1"
-            android:background="@drawable/theme_button"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25sp"
+            android:layout_below="@+id/task1"
+            android:background="@drawable/hollow_button"
             android:visibility="visible" />
 
         <Button
             android:id="@+id/task3"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:padding="15dp"
             android:elevation="50dp"
-            android:textColor="#ffffff"
-            android:textSize="20sp"
-            android:layout_below="@+id/task1"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:layout_below="@+id/task2"
             android:background="@drawable/theme_button_opp"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/task4"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:padding="15dp"
             android:elevation="50dp"
-            android:textColor="#ffffff"
-            android:textSize="20sp"
-            android:layout_below="@+id/task2"
-            android:layout_toRightOf="@+id/task3"
-            android:background="@drawable/theme_button"
-            android:visibility="invisible" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="25sp"
+            android:layout_below="@+id/task3"
+            android:background="@drawable/hollow_button"
+            android:visibility="visible" />
 
         <RelativeLayout
             android:id="@+id/buttonLayout"

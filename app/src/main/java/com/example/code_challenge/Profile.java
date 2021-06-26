@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,7 +21,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.code_challenge.QuickStart.QuickStart1;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Objects;
 
 public class Profile extends AppCompatActivity {
 
@@ -31,7 +35,7 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile);
-
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Profile");
 
         //bottom nav
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -133,7 +137,7 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        LinearLayout linearLayout = findViewById(R.id.profileMembersView);
+        final LinearLayout linearLayout = findViewById(R.id.profileMembersView);
         int familyMembers = sharedPreferences.getInt("members", 0);
         for(int i=1; i<=familyMembers; i++){
             RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
@@ -144,10 +148,13 @@ public class Profile extends AppCompatActivity {
             );
             memberParams.setMargins(120,50,30,50);
 
-            String memberName = sharedPreferences.getString("member"+i+"Name", "");
+            final String memberName = sharedPreferences.getString("member"+i+"Name", "");
             TextView member = new TextView(getApplicationContext());
             member.setId(i);
-            setView(member, memberName);
+            if(i%2 == 0)
+                setView(member, memberName, true);
+            else
+                setView(member, memberName, false);
             member.setLayoutParams(memberParams);
             relativeLayout.addView(member);
 
@@ -158,21 +165,73 @@ public class Profile extends AppCompatActivity {
             cupParams.setMargins(80,50,40,50);
             cupParams.addRule(RelativeLayout.RIGHT_OF, i);
 
-            int memberCups = sharedPreferences.getInt(memberName+"MMC", 0);
+            final int memberCups = sharedPreferences.getInt(memberName+"MMC", 0);
             TextView cups = new TextView(getApplicationContext());
-            if(memberCups <= 100) setView(cups, "League wins: "+memberCups);
-            else setView(cups, "League wins: " + "100+");
+            if(memberCups <= 100) {
+                if (i % 2 == 0)
+                    setView(cups, "League wins: " + memberCups, true);
+                else
+                    setView(cups, "League wins: " + memberCups, false);
+            }
+            else{
+                if(i%2 == 0)
+                    setView(cups, "League wins: " + "100+", true);
+                else
+                    setView(cups, "League wins: " + "100+", false);
+            }
             cups.setLayoutParams(cupParams);
             relativeLayout.addView(cups);
 
+            relativeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    LinearLayout trophyLayout = new LinearLayout(getApplicationContext());
+                    trophyLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                    int limit = 0;
+                    limit = (memberCups>8)? 8 : memberCups;
+                    for(int i=1; i<=limit; i++) {
+                        LinearLayout.LayoutParams trophyParams = new LinearLayout.LayoutParams(60, 60);
+                        trophyParams.setMargins(20,20,20,20);
+                        ImageView trophy = new ImageView(getApplicationContext());
+                        trophy.setImageDrawable(getDrawable(R.drawable.trophy));
+                        trophy.setLayoutParams(trophyParams);
+                        trophyLayout.addView(trophy);
+                    }
+                    if(limit == 8){
+                        TextView textView = new TextView(getApplicationContext());
+                        textView.setText("++");
+                        trophyLayout.addView(textView);
+                    }
+
+                    new AlertDialog.Builder(Profile.this)
+                            .setTitle(memberName + "'s Trophy Cabinet")
+                            .setView(trophyLayout)
+                            .setPositiveButton("Done", null)
+                            .show();
+                }
+            });
+
+            //line
+            LinearLayout.LayoutParams lineParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    5);
+            lineParams.setMargins(0,0,0,10);
+            View line = new View(getApplicationContext());
+            line.setBackground(getDrawable(R.color.colorPrimary));
+            line.setLayoutParams(lineParams);
+
+            if(i!=1) //don't add top line for first element
+                linearLayout.addView(line);
             linearLayout.addView(relativeLayout);
+
         }
 
         Button quickStartGuide = findViewById(R.id.profileQuickStart);
         quickStartGuide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), QuickStart.class);
+                Intent intent = new Intent(getApplicationContext(), QuickStart1.class);
                 startActivity(intent);
             }
         });
@@ -211,11 +270,16 @@ public class Profile extends AppCompatActivity {
 
     }
 
-    private void setView(TextView view, String content){
+    private void setView(TextView view, String content, boolean type){
         view.setText(content);
         view.setTextSize(15);
-        view.setTextColor(Color.WHITE);
-        view.setBackground(getDrawable(R.drawable.theme_button));
+        if(type) {
+            view.setTextColor(getColor(R.color.colorPrimary));
+            view.setBackground(getDrawable(R.drawable.hollow_button));
+        } else {
+            view.setTextColor(Color.WHITE);
+            view.setBackground(getDrawable(R.drawable.theme_button));
+        }
         view.setPadding(50,50,50,50);
         view.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
     }

@@ -1,6 +1,7 @@
 package com.example.code_challenge;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -122,6 +123,16 @@ public class MMCWinner extends AppCompatActivity {
         congratulationsText.setVisibility(View.VISIBLE);
         MMCWinnerName.setVisibility(View.VISIBLE);
         descriptionText.setVisibility(View.VISIBLE);
+
+        Button home = findViewById(R.id.homeWinner);
+        home.setVisibility(View.VISIBLE);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }

@@ -39,8 +39,7 @@
         android:textColor="#ffffff"
         android:padding="15dp"
         android:layout_margin="10dp"
-        android:clickable="true"
-        />
+        android:clickable="true" />
 
     <TextView
         android:id="@+id/datePickText"
@@ -54,8 +53,7 @@
         android:textColor="#ffffff"
         android:padding="15dp"
         android:layout_margin="10dp"
-        android:clickable="true"
-        />
+        android:clickable="true" />
 
     <View
         android:layout_width="match_parent"
