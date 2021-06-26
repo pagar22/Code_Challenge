@@ -31,6 +31,8 @@ public class Profile extends AppCompatActivity {
     TextView familyName;
     ImageView editName;
 
+    int counter = 7;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -185,31 +187,51 @@ public class Profile extends AppCompatActivity {
             relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (counter == 1) {
 
-                    LinearLayout trophyLayout = new LinearLayout(getApplicationContext());
-                    trophyLayout.setOrientation(LinearLayout.HORIZONTAL);
+                        Toast.makeText(getApplicationContext(), "UNLOCKED!", Toast.LENGTH_LONG).show();
 
-                    int limit = 0;
-                    limit = (memberCups>8)? 8 : memberCups;
-                    for(int i=1; i<=limit; i++) {
-                        LinearLayout.LayoutParams trophyParams = new LinearLayout.LayoutParams(60, 60);
-                        trophyParams.setMargins(20,20,20,20);
-                        ImageView trophy = new ImageView(getApplicationContext());
-                        trophy.setImageDrawable(getDrawable(R.drawable.trophy));
-                        trophy.setLayoutParams(trophyParams);
-                        trophyLayout.addView(trophy);
+                        LinearLayout trophyLayout = new LinearLayout(getApplicationContext());
+                        trophyLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                        if (memberCups == 0) {
+
+                            LinearLayout.LayoutParams emptyParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT);
+                            emptyParams.setMargins(40, 40, 20, 20);
+                            TextView empty = new TextView(getApplicationContext());
+                            empty.setText("Just like Tottenham Hotspurs' :( Well and truly empty");
+                            empty.setLayoutParams(emptyParams);
+                            trophyLayout.addView(empty);
+                        } else {
+                            int limit = 0;
+                            limit = (memberCups > 8) ? 8 : memberCups;
+                            for (int i = 1; i <= limit; i++) {
+                                LinearLayout.LayoutParams trophyParams = new LinearLayout.LayoutParams(60, 60);
+                                trophyParams.setMargins(40, 20, 20, 20);
+                                ImageView trophy = new ImageView(getApplicationContext());
+                                trophy.setImageDrawable(getDrawable(R.drawable.trophy));
+                                trophy.setLayoutParams(trophyParams);
+                                trophyLayout.addView(trophy);
+                            }
+                            if (limit == 8) {
+                                TextView textView = new TextView(getApplicationContext());
+                                textView.setText("++");
+                                trophyLayout.addView(textView);
+                            }
+                        }
+
+                        new AlertDialog.Builder(Profile.this)
+                                .setTitle(memberName + "'s Trophy Cabinet")
+                                .setView(trophyLayout)
+                                .setPositiveButton("Done", null)
+                                .show();
                     }
-                    if(limit == 8){
-                        TextView textView = new TextView(getApplicationContext());
-                        textView.setText("++");
-                        trophyLayout.addView(textView);
-                    }
+                    else if(counter>4) --counter;
 
-                    new AlertDialog.Builder(Profile.this)
-                            .setTitle(memberName + "'s Trophy Cabinet")
-                            .setView(trophyLayout)
-                            .setPositiveButton("Done", null)
-                            .show();
+                    else {
+                        Toast.makeText(getApplicationContext(), Integer.toString(--counter), Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 

@@ -104,7 +104,7 @@ public class MMCWinner extends AppCompatActivity {
             description = '\n' + "With " + maxPoints + " points, " + maxMember + " has won MyMommy Season # " + mmcSeason
                     + ". You are now eligible to claim the following rewards: " + '\n'
                     + '\n' + incentiveDetails + '\n'
-                    + "You have won" + (currentMMCWins + 1) + " MyMommy Cups. Keep putting similar effort into vital housework tasks to win more."
+                    + "You have won " + (currentMMCWins + 1) + " MyMommy Cups. Keep putting similar effort into vital housework tasks to win more."
                     + " All the best for future seasons!" + '\n'
                     + "- The MyMommy Team";
         }
