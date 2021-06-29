@@ -479,7 +479,7 @@ public class PointsTally extends AppCompatActivity {
                                         else actionTimeInMillis = 1000L * 5259600L; //2 months in milliseconds
 
                                         //for testing only
-                                        //actionTimeInMillis = 1000 * 15; //season will end in 15 seconds
+                                        //actionTimeInMillis = 1000 * 40; //season will end in 40 seconds
 
                                         myMommySeasonDetails += "Duration: " + duration + '\n';
 

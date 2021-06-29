@@ -33,6 +33,7 @@ public class Registration extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_page);
+        getSupportActionBar().setTitle("Sign Up");
 
         relativeLayout = findViewById(R.id.registrationView);
         linearLayout = findViewById(R.id.registrationViewLL);
